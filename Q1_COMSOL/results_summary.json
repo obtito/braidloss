@@ -1,0 +1,21 @@
+{
+  "frequency_Hz": 200000.0,
+  "delta_um": 147.77165489999476,
+  "Rdc_mohm": 5.488101485927426,
+  "Rac_FEM_mohm": 20.016203372148,
+  "Rac_exact_mohm": 20.01620362764938,
+  "ratio_FEM": 3.64719993306856,
+  "loss_W": 8.00648134885918,
+  "skin_layer_efold_FEM_um": 160.9832662722452,
+  "skin_layer_efold_Bessel_um": 160.99402798103418,
+  "Rac_error_percent": 1.2764727275182963e-06,
+  "last_mesh_change_percent": 1.919637369171187e-05,
+  "I_real_rms_A": 20.0000000000003,
+  "I_imag_rms_A": 7.26167762141246e-16,
+  "radial_integral_current_real_A": 19.99999886173788,
+  "surface_Jrms_A_mm2": 31.6037561274616,
+  "center_Jrms_A_mm2": 0.27946869621889003,
+  "max_profile_abs_error_normalized_to_surface_percent": 0.03936100893428434,
+  "axial_refinement_change_percent": 9.992007221626409e-13,
+  "max_frequency_sweep_Rac_error_percent": 4.3030724050652225e-05
+}
