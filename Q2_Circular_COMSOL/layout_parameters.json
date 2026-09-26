@@ -1,0 +1,24 @@
+{
+  "N": 331,
+  "diameter_mm": 0.14,
+  "ring_spacing_mm": 0.15,
+  "ring_counts": [
+    1,
+    6,
+    12,
+    18,
+    24,
+    30,
+    36,
+    42,
+    48,
+    54,
+    60
+  ],
+  "minimum_center_spacing_mm": 0.14999999999999986,
+  "minimum_copper_gap_um": 9.999999999999842,
+  "outer_center_radius_mm": 1.5,
+  "bare_copper_envelope_diameter_mm": 3.14,
+  "copper_area_mm2": 5.095349124857286,
+  "Jdc_A_mm2": 3.9251481125074377
+}

@@ -1,0 +1,30 @@
+{
+  "new_simulation": "Circular concentric-ring parallel bundle, COMSOL 6.2, 2026-09-26",
+  "reused_references": [
+    {
+      "file": "reference_hexagonal/bundle_200kHz_results.csv",
+      "source": "C:\\Users\\zq257\\Documents\\Codex\\2026-09-25\\jin\\outputs\\Q2_COMSOL\\bundle_200kHz_results.csv",
+      "sha256": "f251ba688e9e6065c795c8859e4d10da15d0ce7aafc602c7e451df2adfc06ffb"
+    },
+    {
+      "file": "reference_hexagonal/frequency_sweep.csv",
+      "source": "C:\\Users\\zq257\\Documents\\Codex\\2026-09-25\\jin\\outputs\\Q2_COMSOL\\frequency_sweep.csv",
+      "sha256": "9fff4eada7ce39733ae61d9a92eef3aa808c1528b71eb0abed88f9dc4628a8fe"
+    },
+    {
+      "file": "reference_hexagonal/results_summary.json",
+      "source": "C:\\Users\\zq257\\Documents\\Codex\\2026-09-25\\jin\\outputs\\Q2_COMSOL\\results_summary.json",
+      "sha256": "b411ca3347b06ecfcb9102ee400ebc735cbdf1d2fa83d6e095916bbd77e8b8b8"
+    },
+    {
+      "file": "reference_hexagonal/strand_currents_200kHz.csv",
+      "source": "C:\\Users\\zq257\\Documents\\Codex\\2026-09-25\\jin\\outputs\\Q2_COMSOL\\strand_currents_200kHz.csv",
+      "sha256": "33d0f55425c85071e0c4dbadad218524cbbaab70690491f28c6f4605652e1a19"
+    },
+    {
+      "file": "Q2_EqualAreaSolid_200kHz.mph",
+      "source": "C:\\Users\\zq257\\Documents\\Codex\\2026-09-25\\jin\\outputs\\Q2_COMSOL\\Q2_EqualAreaSolid_200kHz.mph",
+      "sha256": "32c0efe42fae37dd8a30ec2ebaf5f477da4fd41ede17e39bd33fb93537b972a4"
+    }
+  ]
+}
