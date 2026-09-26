@@ -1,0 +1,26 @@
+[
+  {
+    "file": "circular_results_summary.json",
+    "source": "C:\\Users\\zq257\\Documents\\Codex\\2026-09-25\\jin\\outputs\\Q2_Circular_COMSOL\\results_summary.json",
+    "sha256": "b7b792afced9fbae08067745ed75da7033f8eb81f49435afcb365c6479a3f0a5",
+    "status": "reused from previously solved model; not rerun in this step"
+  },
+  {
+    "file": "straight_strand_currents_200kHz.csv",
+    "source": "C:\\Users\\zq257\\Documents\\Codex\\2026-09-25\\jin\\outputs\\Q2_Circular_COMSOL\\strand_currents_200kHz.csv",
+    "sha256": "30e264ef33ac64bf161b7971255019744545ea63970c1858e4ec4a4a550d06c0",
+    "status": "reused from previously solved model; not rerun in this step"
+  },
+  {
+    "file": "straight_bundle_200kHz_results.csv",
+    "source": "C:\\Users\\zq257\\Documents\\Codex\\2026-09-25\\jin\\outputs\\Q2_Circular_COMSOL\\bundle_200kHz_results.csv",
+    "sha256": "f8c997693b650996a474233a00955bab0b9af22942d7003791f4301d5d18c9b6",
+    "status": "reused from previously solved model; not rerun in this step"
+  },
+  {
+    "file": "equal_area_solid_results.csv",
+    "source": "C:\\Users\\zq257\\Documents\\Codex\\2026-09-25\\jin\\outputs\\Q2_Circular_COMSOL\\equal_area_solid_results.csv",
+    "sha256": "1ffe06ddab14826c3d500941ad1dbc95e434d14d5785804d030f1ff348431f91",
+    "status": "reused from previously solved model; not rerun in this step"
+  }
+]

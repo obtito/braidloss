@@ -1,0 +1,20 @@
+{
+  "N": 331,
+  "normal_wire_diameter_mm": 0.13999999999999999,
+  "twist_pitch_mm": 40.0,
+  "twist_rate_per_m": 157.07963267948966,
+  "turns_per_axial_meter": 25.0,
+  "outer_helix_angle_deg": 13.25818090611812,
+  "outer_wire_length_per_axial_meter_m": 1.0273833387573148,
+  "normal_copper_area_mm2": 5.095349124857285,
+  "total_horizontal_copper_area_mm2": 5.172136587100367,
+  "copper_volume_per_axial_meter_cm3": 5.172136587100367,
+  "copper_length_volume_increase_percent": 1.5070108124382475,
+  "Rdc_slender_wire_parallel_ohm_per_m": 0.0034344933252229513,
+  "minimum_physical_copper_gap_um": 9.968777373677863,
+  "nearest_strand_pair": [
+    5,
+    6
+  ],
+  "nearest_pair_axial_offset_um": -3.0599366883596986
+}

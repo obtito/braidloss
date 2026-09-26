@@ -1,0 +1,18 @@
+{
+  "native_models": [
+    "Q2_RegularTwist3D_OnePitch.mph",
+    "Q2_RegularTwist_200kHz.mph",
+    "verification/low_frequency_10Hz.mph",
+    "verification/outer_boundary_40mm.mph",
+    "verification/zero_twist_limit.mph"
+  ],
+  "main_model_read_back_with_COMSOL": true,
+  "low_frequency_model_read_back_with_COMSOL": true,
+  "native_container_CRC_check": "passed",
+  "final_Java_source_compilation": "passed",
+  "Rebuild_PowerShell_syntax": "passed",
+  "geometry_check": "passed",
+  "current_and_loss_sums": "passed",
+  "report_image_paths": "passed",
+  "figures_visually_inspected": true
+}
