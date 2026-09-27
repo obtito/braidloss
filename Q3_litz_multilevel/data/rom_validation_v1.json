@@ -1,0 +1,77 @@
+{
+  "status": "not_accepted",
+  "source_sha256": "eab42ae3e905aeb8668097544b026c28cbdbac5641703d913aa212e95a3842ce",
+  "tolerance_pct": 5,
+  "fit_coefficients": null,
+  "cases": [
+    {
+      "case": "baseline_64_av_m3",
+      "role": "development",
+      "prediction": {
+        "Rac": 0.013999144647842972,
+        "Rdc": 0.0028816125895071627,
+        "K": 4.858093936297392,
+        "imbalance_complex": 4.043842209418558,
+        "passivity_min_eigenvalue": 0.19308391228641267,
+        "slices": 16,
+        "modes": 3
+      },
+      "COMSol": {
+        "Rac": 0.014314942597278368,
+        "Rdc": 0.0028816840747698195,
+        "K": 4.967561407099009
+      },
+      "error_pct": {
+        "Rac": -2.2060720627369967,
+        "Rdc": -0.0024806766044438433,
+        "K": -2.203646051464603
+      },
+      "power_error_pct": 0.005901003186570275,
+      "status": "pass"
+    },
+    {
+      "case": "validate_two_64_16_96",
+      "role": "independent",
+      "prediction": {
+        "Rac": 0.012708679495696245,
+        "Rdc": 0.0029073860802916055,
+        "K": 4.371170234956064,
+        "imbalance_complex": 1.6412085891763861,
+        "passivity_min_eigenvalue": 0.20063842460133544,
+        "slices": 16,
+        "modes": 3
+      },
+      "status": "pending_COMSOL"
+    },
+    {
+      "case": "validate_three_64_32_32_96",
+      "role": "independent",
+      "prediction": {
+        "Rac": 0.01277904117125469,
+        "Rdc": 0.0029525569597069006,
+        "K": 4.328126889895212,
+        "imbalance_complex": 0.039209717172669564,
+        "passivity_min_eigenvalue": 0.201833018077627,
+        "slices": 16,
+        "modes": 3
+      },
+      "status": "pending_COMSOL"
+    },
+    {
+      "case": "holdout_three_64_m16_16_96",
+      "role": "independent",
+      "prediction": {
+        "Rac": 0.014102309372842743,
+        "Rdc": 0.0030161855356316274,
+        "K": 4.675544394151317,
+        "imbalance_complex": 1.9999957014782868,
+        "passivity_min_eigenvalue": 0.20430671314630444,
+        "slices": 16,
+        "modes": 3
+      },
+      "status": "pending_COMSOL"
+    }
+  ],
+  "ranking": [],
+  "limitations": "Curved-wire inductance remains an approximation. Screening acceptance is not final 3D verification of the optimum."
+}

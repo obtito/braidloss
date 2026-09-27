@@ -1,0 +1,52 @@
+{
+  "source_sha256": "e403f052ad8175860e337fd921be4fcc8cbf1ca84201df723d98a85412af40ea",
+  "fit_coefficients": null,
+  "note": "No empirical fitting. Baseline and positive-pitch two-level case are development checks; two three-level cases and the new negative-pitch two-level case are holdouts.",
+  "predictions": {
+    "baseline_64_av_m3": {
+      "Rac": 0.014278079142447503,
+      "Rdc": 0.0028816125895071627,
+      "K": 4.954891991532234,
+      "imbalance_complex": 4.043822741174515,
+      "passivity_min_eigenvalue": 0.19311506959437472,
+      "slices": 16,
+      "modes": 3
+    },
+    "validate_two_64_16_96": {
+      "Rac": 0.01319939290191576,
+      "Rdc": 0.0029073860802916055,
+      "K": 4.539951880278619,
+      "imbalance_complex": 1.6410882831797342,
+      "passivity_min_eigenvalue": 0.20116240668297092,
+      "slices": 16,
+      "modes": 3
+    },
+    "validate_three_64_32_32_96": {
+      "Rac": 0.013753582453048193,
+      "Rdc": 0.0029525569597069006,
+      "K": 4.658193776018975,
+      "imbalance_complex": 0.03920617194713707,
+      "passivity_min_eigenvalue": 0.20214096267130352,
+      "slices": 16,
+      "modes": 3
+    },
+    "holdout_three_64_m16_16_96": {
+      "Rac": 0.015432007896132433,
+      "Rdc": 0.0030161855356316274,
+      "K": 5.116398747300794,
+      "imbalance_complex": 2.0001207787254356,
+      "passivity_min_eigenvalue": 0.2043989857861309,
+      "slices": 16,
+      "modes": 3
+    },
+    "holdout_two_64_m32_96": {
+      "Rac": 0.01311286470406063,
+      "Rdc": 0.0028870072767696806,
+      "K": 4.5420268973941855,
+      "imbalance_complex": 1.6414045030102524,
+      "passivity_min_eigenvalue": 0.19989494046822884,
+      "slices": 16,
+      "modes": 3
+    }
+  }
+}

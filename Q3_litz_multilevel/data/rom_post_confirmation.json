@@ -1,0 +1,31 @@
+{
+  "status": "restricted_after_new_FEM_evidence",
+  "threshold_pct": 5,
+  "exceeded_candidates": [
+    "g4x4x4_pm32_m16_64"
+  ],
+  "max_absolute_Rac_error_pct": 5.3518558163270225,
+  "meaning": "Historical screening retained. New designs require further validation; no reliable exhaustive ranking claim.",
+  "confirmed_cases": [
+    {
+      "candidate": "g4x16_pm16_128",
+      "Rac_error_pct": -2.07783332494057,
+      "K_error_pct": -2.062605417582042
+    },
+    {
+      "candidate": "g4x16_p16_128",
+      "Rac_error_pct": -2.0462860639924862,
+      "K_error_pct": -2.030002993496638
+    },
+    {
+      "candidate": "g4x16_pm32_128",
+      "Rac_error_pct": -3.0067897079000483,
+      "K_error_pct": -2.9863275018335855
+    },
+    {
+      "candidate": "g4x4x4_pm32_m16_64",
+      "Rac_error_pct": -5.3518558163270225,
+      "K_error_pct": -5.281800960328054
+    }
+  ]
+}

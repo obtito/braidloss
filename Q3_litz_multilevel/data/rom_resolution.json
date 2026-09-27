@@ -1,0 +1,26 @@
+[
+  {
+    "id": "g4x16_pm16_128",
+    "original_K": 4.505172853207801,
+    "refined_K": 4.505244344537032,
+    "relative_Rac_change_pct": 0.0015868720592893126
+  },
+  {
+    "id": "g4x16_p16_128",
+    "original_K": 4.514246886200434,
+    "refined_K": 4.514318639167922,
+    "relative_Rac_change_pct": 0.0015894781410175085
+  },
+  {
+    "id": "g4x16_pm32_128",
+    "original_K": 4.518476061346492,
+    "refined_K": 4.518547928068071,
+    "relative_Rac_change_pct": 0.0015905079633782293
+  },
+  {
+    "id": "g4x4x4_pm32_m16_64",
+    "original_K": 4.538341924262034,
+    "refined_K": 4.538576874197762,
+    "relative_Rac_change_pct": 0.0051769994339201375
+  }
+]
