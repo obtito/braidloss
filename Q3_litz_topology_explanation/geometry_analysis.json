@@ -1,0 +1,101 @@
+{
+  "scope": "Analytical tube-envelope screen using continuous polynomial interval bounds; no new COMSOL solid/EM solve",
+  "arithmetic": "float64 Bernstein hulls with 0.01 nm distance margin, not formal interval arithmetic",
+  "N": 484,
+  "period_mm": 499.99999999999994,
+  "station_advance_mm": 1.0330578512396693,
+  "diameter_um": 125.63423617139475,
+  "grid_spacing_um": 217.56588962069517,
+  "all_strand_pairs": 116886,
+  "retained_candidate_pairs": 7598,
+  "continuous_same_z_center_lower_mm": 0.1538423059059023,
+  "continuous_max_slope_upper": 0.2521110051792508,
+  "continuous_max_angle_upper_deg": 14.150023685009828,
+  "continuous_3D_center_distance_lower_mm": 0.1491745689261212,
+  "continuous_bare_surface_gap_lower_um": 23.540332754726446,
+  "continuous_local_bend_radius_lower_mm": 1.9343124687833106,
+  "sampled_min_bend_radius_mm": 2.0060241670751418,
+  "geometric_outer_copper_bend_strain_estimate": 0.03131423794225125,
+  "mean_length_factor": 1.0222759131890125,
+  "box_side_mm": 4.763483541717216,
+  "round_envelope_D_mm": 6.5870115042098485,
+  "nominal_copper_fill_square": 0.2644246342588267,
+  "mean_copper_volume_fill_square": 0.27031493445661264,
+  "nominal_copper_fill_round": 0.17606965981969172,
+  "mean_copper_volume_fill_round": 0.17999177227705412,
+  "insulation_cases": [
+    {
+      "enamel_radial_um": 0,
+      "outer_diameter_um": 125.63423617139475,
+      "clearance_bound_um": 23.54033275472645
+    },
+    {
+      "enamel_radial_um": 4,
+      "outer_diameter_um": 133.63423617139475,
+      "clearance_bound_um": 15.54033275472645
+    },
+    {
+      "enamel_radial_um": 6,
+      "outer_diameter_um": 137.63423617139475,
+      "clearance_bound_um": 11.54033275472645
+    },
+    {
+      "enamel_radial_um": 8,
+      "outer_diameter_um": 141.63423617139475,
+      "clearance_bound_um": 7.54033275472645
+    },
+    {
+      "enamel_radial_um": 10,
+      "outer_diameter_um": 145.63423617139475,
+      "clearance_bound_um": 3.5403327547264496
+    },
+    {
+      "enamel_radial_um": 12,
+      "outer_diameter_um": 149.63423617139475,
+      "clearance_bound_um": -0.4596672452735504
+    }
+  ],
+  "uniform_xy_scaling_sufficient_conditions": [
+    {
+      "enamel_um": 0,
+      "gap_um": 0,
+      "minimum_xy_scale_for_bound": 0.8345215317730968
+    },
+    {
+      "enamel_um": 0,
+      "gap_um": 5,
+      "minimum_xy_scale_for_bound": 0.8692971574478421
+    },
+    {
+      "enamel_um": 8,
+      "gap_um": 0,
+      "minimum_xy_scale_for_bound": 0.9464935768384111
+    },
+    {
+      "enamel_um": 8,
+      "gap_um": 5,
+      "minimum_xy_scale_for_bound": 0.9819175455605279
+    }
+  ],
+  "closeup": {
+    "loop_indices": [
+      462,
+      463
+    ],
+    "same_z_phase": 0.499999999999917,
+    "same_z_center_mm": 0.1538423159059023,
+    "numerically_minimized_phase_eta": [
+      0.5108479415549037,
+      -0.02169582713045786
+    ],
+    "numerically_minimized_center_mm": 0.15216429624345348
+  },
+  "not_verified": [
+    "specific enamel specification",
+    "manufacturing tolerance",
+    "solid CAD boolean validation",
+    "contact/friction/tension",
+    "manufacturing guide trajectories",
+    "three-dimensional volume FEM"
+  ]
+}

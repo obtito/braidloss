@@ -1,0 +1,24 @@
+*******************************************
+***COMSOL 6.2.0.290 progress output file***
+*******************************************
+Sat Sep 26 15:46:56 CST 2026
+COMSOL Multiphysics 6.2 (开发版本: 290) 在批处理模式下启动
+正在运行: C:\Users\zq257\Documents\Codex\2026-09-26\sa\outputs\litz_topology_explanation\comsol_mapping\NativeShapeExport.class
+---------- 当前进度: 100 % - 正在更新选择
+Memory: 413/413 424/424
+           当前进度:   0 % - Strand 44 - original coordinate table
+Memory: 423/424 434/435
+           当前进度:   9 % - 形成联合体
+Memory: 424/424 434/435
+           当前进度:   9 % - 执行布尔操作
+Memory: 434/434 441/443
+---------- 当前进度: 100 % - 正在更新选择
+Memory: 434/435 441/443
+---------- 当前进度: 100 % - 正在创建可视化网格
+Memory: 458/462 457/463
+
+/***************/
+/*****错误********/
+/***************/
+java.security.AccessControlException: 安全性首选项“文件系统访问”不允许“read”访问“C:\Users\zq257\Documents\Codex\2026-09-26\sa\outputs\litz topology explanation\comsol mapping”。
+总时间: 3 s.
