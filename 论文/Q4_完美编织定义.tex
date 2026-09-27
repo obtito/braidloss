@@ -1,0 +1,771 @@
+% !TeX program = xelatex
+% =====================================================================
+%  完美编织（Perfect Braid）的定义与评判标准
+%  问题四 定义文档（可独立编译，亦可并入主论文）
+%  编译：xelatex -> xelatex
+% =====================================================================
+\documentclass[12pt, a4paper]{ctexart}
+
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.6cm, right=2.6cm]{geometry}
+\setCJKmainfont[AutoFakeBold=2.5, AutoFakeSlant=0.2]{SimSun}
+\setCJKsansfont[AutoFakeBold=2.5]{SimHei}
+\setCJKmonofont{SimHei}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{adjustbox}
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+
+\linespread{1.4}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{2pt plus 1pt}
+\emergencystretch=3em
+\tolerance=2000
+
+% --- 定理类环境 ---
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}{命题}[section]
+\newtheorem{theorem}{定理}[section]
+\newtheorem{remark}{注}[section]
+
+\newtcolorbox{keybox}[1][]{
+  colback=blue!4, colframe=blue!55!black,
+  boxrule=0.7pt, arc=2pt, left=6pt, right=6pt, top=5pt, bottom=5pt,
+  fonttitle=\bfseries\sffamily, title={#1}
+}
+
+% --- 单位宏（\Omega 不可放进 \mathrm，否则 Times New Roman 渲染为空白方框）---
+\newcommand{\U}[1]{\ensuremath{\,\mathrm{#1}}}
+\newcommand{\Umm}{\ensuremath{\,\mathrm{mm}}}
+\newcommand{\Umohm}{\ensuremath{\,\mathrm{m}\Omega}}
+\newcommand{\Uohm}{\ensuremath{\,\mathrm{m}\Omega/\mathrm{m}}}
+\newcommand{\UdegC}{\ensuremath{\,\text{\textdegree}\mathrm{C}}}
+\newcommand{\Rac}{R_{\mathrm{ac}}}
+\newcommand{\Rdc}{R_{\mathrm{dc}}}
+
+\title{\bfseries 完美编织（Perfect Braid）的定义与评判标准\\[6pt]
+\large 三维拓扑编织 Litz 线电磁优化设计 —— 问题四理论基础}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{keybox}[文档定位]
+本文档给出「完美换位 / 完美编织」的严格数学定义、可直接计算的形式化判据，
+以及一个可参数化的编织模型（含母轨迹参数方程与生成变换）。
+全部定义域、参数与约束条件均显式给出，判据可用统一流程计算，
+使不同编织方案之间可以\textbf{客观排序}。
+文中的命题均已数值验证（见第 \ref{sec:verify} 节）。
+\end{keybox}
+
+\section{目的与范围}
+
+\subsection{要解决的问题}
+
+Litz 线中每股细丝的高频损耗取决于它所经历的磁场历史。邻近效应损耗近似正比于
+该丝所处位置的磁场强度平方，而磁场强度沿径向单调变化（越靠外越强）。
+因此，\textbf{各丝的径向停留分布是否公平}，决定了电流与损耗能否被均分。
+
+本文档要形式化回答三个问题：
+
+\begin{enumerate}[label=(\roman*), leftmargin=2.4em, itemsep=2pt]
+\item \textbf{什么是「完美编织」}——给出无歧义的数学定义；
+\item \textbf{如何度量「接近完美」}——给出可计算、可比较的量化判据；
+\item \textbf{如何构造与检验}——给出参数化模型与验证流程。
+\end{enumerate}
+
+\subsection{不涉及的内容}
+
+本文档只处理\textbf{几何与拓扑层面}的公平性判据，不涉及具体电磁仿真的数值结果；
+判据的物理有效性由仿真结果另行验证。
+
+\section{记号、坐标系与参数}
+
+\subsection{坐标系}
+
+采用圆柱坐标 $(r,\theta,z)$，$z$ 为束轴，右手系，$\theta$ 沿逆时针为正。
+评估长度为 $L=1\U{m}$；编织周期长度为 $L_c$，以无量纲周期参数
+\begin{equation}
+s = z/L_c \in [0,1)
+\end{equation}
+表征周期内位置。截面指 $z=\text{const}$ 平面，以极坐标 $(r,\theta)$ 描述。
+
+\subsection{基本参数}
+
+\begin{table}[htbp]
+\centering
+\caption{模型参数与符号}
+\label{tab:symbols}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{cll}
+\toprule
+符号 & 含义 & 取值 / 关系 \\
+\midrule
+$d$ & 细丝直径 & 设计变量（本文取 $0.14\Umm$，与问题二一致） \\
+$\rho$ & 细丝半径 & $\rho = d/2$ \\
+$t_{\mathrm{ins}}$ & 漆膜等效间隙 & $10\U{\mu m}$ \\
+$g$ & 丝间最小中心距（硬约束） & $g = d + t_{\mathrm{ins}} = 0.15\Umm$ \\
+$N$ & 丝数 & 设计变量 \\
+$M$ & 径向壳层数（不含中心） & $M = \lceil\,\cdot\,\rceil$，由 $N$ 决定 \\
+$m$ & 壳层编号 & $m \in \{0,1,\dots,M\}$ \\
+$n_m$ & 壳层 $m$ 的丝数 & $\sum_m n_m = N$ \\
+$\rho_m$ & 壳层 $m$ 的名义半径 & $\rho_0=0$；$\rho_m = mG$ \\
+$G$ & 实际径向间距（环带宽度） & $G = (1+\varepsilon)g$，$\varepsilon\ge 0$ 为膨胀因子 \\
+$q$ & 平方因子 & $q = (2M+1)^2$ \\
+$A_m$ & 壳层 $m$ 的面积 & $A_0=\pi G^2/4$；$A_m = 2\pi m G^2$ \\
+$c_m$ & 壳层 $m$ 的丝数容量 & $c_0=1$；$c_m=\lfloor \pi/\arcsin(g/2mG)\rfloor$ \\
+$f_m$ & 壳层 $m$ 的面积占比 & $f_m = A_m / A_{\mathrm{tot}}$ \\
+$\ell_{j,m}$ & 丝 $j$ 在壳层 $m$ 的停留弧长 & 由轨迹积分给出 \\
+$p_{j,m}$ & 丝 $j$ 的壳层停留占比 & $p_{j,m} = \ell_{j,m}/\sum_{m'}\ell_{j,m'}$ \\
+$j$ & 丝编号 & $j \in \{0,\dots,N-1\}$ \\
+$k$ & 站点编号 & $k \in \{0,\dots,N-1\}$ \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{统一工况（继承赛题，不得更改）}
+
+无氧铜 $\sigma = 5.8\times10^{7}\U{S/m}$，$\mu_r=1$，$f = 200\U{kHz}$，
+$I = 20\U{A}$ 有效值，$J_{dc}\le 4\U{A/mm^2}$，$L=1\U{m}$，
+环境 $20\UdegC$，热电解耦，丝间必须电绝缘。
+问题四要求与问题二、三在\textbf{同包络、同铜量}下对比，
+即包络直径 $\varnothing 3.14\Umm$、铜面积 $5.0953\U{mm^2}$。
+
+\section{编织的数学模型}
+
+\subsection{径向壳层划分}
+
+\begin{definition}[等宽环带划分]
+把束截面按半径划分为 $M+1$ 个\textbf{等宽环带} $\{S_m\}_{m=0}^{M}$，宽度均为 $G$：
+$S_0$ 为中心圆盘（半径 $G/2$），$S_m$（$m\ge1$）为环带
+$\big[(m-\tfrac12)G,\ (m+\tfrac12)G\big]$。壳层面积与面积占比为
+\begin{equation}
+A_0 = \frac{\pi G^2}{4},\qquad
+A_m = \pi\Big[\big(m+\tfrac12\big)^2G^2-\big(m-\tfrac12\big)^2G^2\Big] = 2\pi m G^2 ,
+\end{equation}
+\begin{equation}
+f_m = \frac{A_m}{A_{\mathrm{tot}}},\qquad
+A_{\mathrm{tot}} = \sum_{m=0}^{M} A_m = \pi G^2\Big(M(M+1)+\frac14\Big).
+\label{eq:Atot}
+\end{equation}
+\end{definition}
+
+\begin{proposition}[总面积恒等式与面积占比闭式]
+\label{prop:Atot}
+括号内的量恰为完全平方：
+\begin{equation}
+\mathcal{D} := M(M+1)+\frac14 = \frac{(2M+1)^2}{4},
+\qquad\text{故}\qquad
+A_{\mathrm{tot}} = \frac{\pi G^2 (2M+1)^2}{4}.
+\end{equation}
+记 $q := (2M+1)^2$，则各层面积占比为\textbf{纯有理数且与 $G$ 无关}：
+\begin{equation}
+\boxed{\;f_0 = \frac{1}{q},\qquad
+f_m = \frac{8m}{q}\quad (m\ge1),\qquad \sum_{m=0}^{M}f_m = 1\;}
+\label{eq:fm}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+$4M(M+1)+1 = 4M^2+4M+1 = (2M+1)^2$。由 \eqref{eq:Atot}，
+$A_0/(\pi G^2)=\frac{1}{4\mathcal{D}}$，$A_m/(\pi G^2)=2m/\mathcal{D}$；
+代入 $\mathcal{D}=q/4$ 得 $f_0=1/q$，$f_m=8m/q$。
+求和：$1+\sum_{m=1}^{M}8m = 1+4M(M+1) = (2M+1)^2 = q$。
+\end{proof}
+
+\begin{remark}
+命题 \ref{prop:Atot} 是全部后续判据的代数基础：\textbf{它把「公平停留」
+化为整数分拆问题}——因为 $D_{\mathrm{shell}}$ 只依赖整数丝数 $n_m$ 与
+有理数 $Nf_m$，完美性能否精确达到完全由整除性决定。
+\end{remark}
+
+\begin{remark}
+壳层面积 $\propto m$ 是几何必然：环带面积正比于半径。
+这正是「公平停留」要求非均匀停留占比的根源。
+\end{remark}
+
+\subsection{单层丝数容量}
+
+等变构造要求每一层容纳整数根丝，且相邻丝心距不小于 $g$。
+在半径 $mG$ 的圆上均布 $n$ 个点，相邻弦长为 $2mG\sin(\pi/n)$，
+故容量为
+\begin{equation}
+c_0 = 1,\qquad
+c_m = \left\lfloor \frac{\pi}{\arcsin\!\big(g/(2mG)\big)} \right\rfloor
+\qquad (m\ge1).
+\label{eq:cap}
+\end{equation}
+$G=g$ 时 $c_m = \lfloor \pi/\arcsin(1/(2m))\rfloor$，即 $6,12,18,25,31,37,\dots$，
+在 $m\le3$ 时与六方数 $6m$ 相同、$m\ge4$ 时略大于 $6m$。
+
+\subsection{核心模型：等变编织}
+
+\begin{definition}[编织的等变模型]
+称一个编织为\textbf{等变编织}（equivariant braid），若存在
+\begin{enumerate}[label=(\alph*), leftmargin=2.4em, itemsep=2pt]
+\item 一条\textbf{母轨迹} $\;\gamma:\mathbb{R}\to\mathbb{R}_{\ge0}\times\mathbb{S}^1$，
+$\gamma(s) = (r(s),\theta(s))$，满足 $r(s+1)=r(s)$，$\theta(s+1)=\theta(s)+2\pi$；
+\item 一组\textbf{平移量} $\delta_j = j/N$，$j=0,\dots,N-1$；
+\end{enumerate}
+使第 $j$ 根丝的截面轨迹为
+\begin{equation}
+r_j(z) = r\!\left(\frac{z}{L_c}+\frac{j}{N}\right),\qquad
+\theta_j(z) = \theta\!\left(\frac{z}{L_c}+\frac{j}{N}\right)+\frac{2\pi j}{N}.
+\label{eq:equivariant}
+\end{equation}
+\end{definition}
+
+式 \eqref{eq:equivariant} 的含义是：\textbf{每根丝都由同一根母轨迹经「沿轴平移 $jL_c/N$」
+与「绕轴旋转 $2\pi j/N$」得到}。这正是「各丝电磁履历严格一致」的数学表达。
+
+\begin{proposition}[等变 $\Rightarrow$ 等履历]
+\label{prop:equiv}
+在等变模型 \eqref{eq:equivariant} 下，各丝的壳层停留占比相同：
+$p_{j,m} = p_{m}$ 与 $j$ 无关。特别地
+$D_{\mathrm{shell}}$ 的 $\max_j$ 可去掉，退化为对单一母轨迹的一次积分。
+\end{proposition}
+
+\begin{proof}
+$r_j(z) = r(z/L_c+j/N)$ 是 $r(\cdot)$ 的平移，而平移不改变函数在任一周期上的
+水平集测度：$\{z\in[0,L_c): r_j(z)\in S_m\}$ 的测度与 $j$ 无关。
+故 $\ell_{j,m}$ 与 $j$ 无关，从而 $p_{j,m}$ 与 $j$ 无关。
+\end{proof}
+
+\subsection{逐站截面形式（便于构造与计算）}
+
+母轨迹的连续形式便于分析，实际构造时用\textbf{逐站截面}离散形式。
+
+\begin{definition}[站点与层序]
+把周期离散为 $N$ 个\textbf{站点} $k=0,\dots,N-1$，位于
+$z_k = kL_c/N$。定义\textbf{层序}
+\begin{equation}
+\mathcal{L}:\mathbb{Z}_N\to\{0,1,\dots,M\},\qquad
+\#\{k:\mathcal{L}(k)=m\} = n_m\ \ \forall m .
+\end{equation}
+则第 $j$ 根丝在站点 $k$ 上的状态为
+\begin{equation}
+\boxed{\;
+r_j(z_k) = \rho_{\mathcal{L}((j+k)\bmod N)},\qquad
+\theta_j(z_k) = \frac{2\pi\, i_{jk}}{n_{\mathcal{L}((j+k)\bmod N)}} + \psi_{\mathcal{L}((j+k)\bmod N)}
+\;}
+\label{eq:station}
+\end{equation}
+其中 $i_{jk}$ 为丝 $j$ 在站点 $k$ 所在壳层内按 $j$ 升序的序号
+（$i_{jk}=0,1,\dots,n_m-1$），$\psi_m$ 为壳层整体的方位相位。
+\end{definition}
+
+\begin{proposition}[平移生成 $\Rightarrow$ 占据平衡]
+\label{prop:occupancy}
+在构造 \eqref{eq:station} 下，\textbf{每一个站点}上各壳层的丝数恒为 $n_m$，
+与站点 $k$ 无关。
+\end{proposition}
+
+\begin{proof}
+站点 $k$ 上壳层 $m$ 的丝数为
+$\#\{j: \mathcal{L}((j+k)\bmod N)=m\}$。
+当 $j$ 遍历 $\{0,\dots,N-1\}$ 时，$(j+k)\bmod N$ 亦遍历 $\mathbb{Z}_N$，
+故该计数等于 $\#\{k':\mathcal{L}(k')=m\}=n_m$，与 $k$ 无关。
+\end{proof}
+
+命题 \ref{prop:occupancy} 说明：\textbf{平移生成自动保证每一截面都是密排无碰撞的}。
+这是「等变」带来的额外好处——公平性与无碰撞性由同一构造同时满足。
+
+\subsection{站点间的 $C^1$ 插值}
+\label{sec:interp}
+
+为得到连续可微轨迹，站点之间用三次 Hermite 插值：
+对区间 $z\in[z_k,z_{k+1}]$，记 $h=L_c/N$，$t=(z-z_k)/h$，
+\begin{equation}
+r_j(z) = h_{00}(t)\,r_j(z_k) + h_{10}(t)\,h\,r_j'(z_k)
+       + h_{01}(t)\,r_j(z_{k+1}) + h_{11}(t)\,h\,r_j'(z_{k+1}),
+\end{equation}
+其中 $h_{00}=2t^3-3t^2+1$，$h_{10}=t^3-2t^2+t$，
+$h_{01}=-2t^3+3t^2$，$h_{11}=t^3-t^2$，
+导数取中心差分 $r_j'(z_k)=\big[r_j(z_{k+1})-r_j(z_{k-1})\big]/(2h)$。
+方位角 $\theta_j$ 同法处理，并需先做单调化（消去 $2\pi$ 跳变）。
+周期条件 $r_j(z_0)=r_j(z_N)$、$\theta_j(z_N)=\theta_j(z_0)+2\pi$ 保证闭合。
+
+\subsection{生成变换}
+
+模型的全部结构由两个变换生成：
+
+\begin{table}[htbp]
+\centering
+\caption{生成变换及其性质}
+\label{tab:transforms}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{clll}
+\toprule
+变换 & 定义 & 数学性质 & 作用 \\
+\midrule
+$T_\delta$ & $z \mapsto z + \delta L_c$ & 等距、保测度 & 生成丝间差异（$\delta=j/N$）\\
+$R_\alpha$ & $\theta \mapsto \theta + \alpha$ & 等距、保面积 & 生成方位错开（$\alpha=2\pi j/N$）\\
+$\Phi_s$ & $\gamma(s) \mapsto \gamma(s+\cdot)$ & 保周期结构 & 编织变换（单参数演化）\\
+$\mathcal{E}_m$ & $m \leftrightarrow m\pm1$ & 双射（需留隙） & 层间交换（受定理 \ref{thm:dilation} 约束）\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\section{完美编织的公理化定义}
+
+\begin{definition}[完美编织]
+\label{def:perfect}
+称编织为\textbf{完美编织}，若下列四条同时成立：
+
+\vspace{2pt}
+\textbf{(P1) 公平性}（壳层停留与面积成正比）
+\begin{equation}
+p_{j,m} = f_m = \frac{A_m}{A_{\mathrm{tot}}}
+\qquad \forall\, j\in\{0,\dots,N-1\},\ \forall\, m\in\{0,\dots,M\}.
+\label{eq:P1}
+\end{equation}
+
+\textbf{(P2) 方位各向同性}（方位角覆盖均匀）
+\begin{equation}
+\int_0^{L_c} e^{\,\mathrm{i}\,q\,\theta_j(z)}\,\mathrm{d}z = 0
+\qquad \forall\, q \in \mathbb{Z}\setminus\{0\},\ \forall\, j .
+\label{eq:P2}
+\end{equation}
+
+\textbf{(P3) 周期闭合}（周期末截面族与周期初全等）
+\begin{equation}
+\{r_j(L_c),\theta_j(L_c)\}_{j=0}^{N-1}
+= \{r_j(0),\theta_j(0)\}_{j=0}^{N-1}
+\quad\text{（作为集合相等，允许整体置换）}.
+\label{eq:P3}
+\end{equation}
+
+\textbf{(P4) 无碰撞}（丝间最小距离不低于硬约束）
+\begin{equation}
+\min_{j\ne j'}\min_{z\in[0,L_c]}
+\big\|\bm{x}_j(z)-\bm{x}_{j'}(z)\big\| \;\ge\; g,
+\qquad \bm{x}_j = (r_j\cos\theta_j,\ r_j\sin\theta_j).
+\label{eq:P4}
+\end{equation}
+\end{definition}
+
+\begin{keybox}[为什么 (P1) 能刻画「电磁履历一致」]
+邻近效应损耗密度近似正比于 $|H|^2$，而 $|H(r)|\propto r$（束内磁场随半径线性增长）。
+故丝 $j$ 的\textbf{平均磁场暴露}为
+$\overline{|H|^2}_j \propto \sum_m p_{j,m}\,\overline{r^2}_m$。
+若 (P1) 成立，则所有丝的 $\sum_m f_m \overline{r^2}_m$ 相同，
+即\textbf{平均磁场暴露严格一致}，从而邻近效应造成的损耗增量一致。
+这就是 (P1) 作为「完美」判据的物理依据。
+\end{keybox}
+
+\begin{remark}
+(P1) 是\textbf{主判据}；(P2) 补足方位方向的公平性（仅 (P1) 不能排除
+「始终停在某个方位角」的病态解）；(P3)(P4) 是\textbf{可行性约束}，
+不满足则不是可制造的编织。
+\end{remark}
+
+\section{评判标准}
+
+\subsection{主判据：换位充分性偏差}
+
+\begin{definition}[换位充分性偏差]
+\begin{equation}
+D_{\mathrm{shell}}
+= \max_{j} \sum_{m=0}^{M}
+\left|\, p_{j,m} - f_m \,\right| .
+\label{eq:Dshell}
+\end{equation}
+由命题 \ref{prop:equiv}，等变编织下 $p_{j,m}$ 与 $j$ 无关，故
+$D_{\mathrm{shell}} = \sum_m |p_m - f_m|$，一次积分即可算出。
+\end{definition}
+
+$D_{\mathrm{shell}}=0$ 当且仅当 (P1) 成立，故它是「完美性」的自然度量。
+
+\subsection{可达到的最优值：闭式与下界}
+
+由命题 \ref{prop:Atot}，$N f_m$ 为有理数；把整数 $n_m$ 尽量贴近 $N f_m$
+即得最优。记小数部分 $\phi_m := \{N f_m\} = N f_m - \lfloor N f_m\rfloor$，
+$K := \sum_m \phi_m \in \mathbb{Z}$（因 $\sum_m Nf_m = N$ 为整数）。
+把「向上取整」的机会分配给 $\phi_m$ 最大的 $K$ 层，即得精确最优值：
+
+\begin{theorem}[一般最优值闭式]
+\label{thm:general}
+\begin{equation}
+\boxed{\;
+D_{\mathrm{shell}}^{\min}(M,N)
+= \frac{2}{N}\sum_{m\in \mathcal{S}}\big(1-\phi_m\big),
+\qquad
+\mathcal{S} := \text{$\{\phi_m\}$ 中最小的 $M+1-K$ 个}
+\;}
+\label{eq:general}
+\end{equation}
+等价地 $D_{\mathrm{shell}}^{\min} = \dfrac{2}{N}\Big(K-\sum_{m\in\mathcal{T}}\phi_m\Big)$，
+$\mathcal{T}$ 为最大的 $K$ 个 $\phi_m$。特别地
+\begin{equation}
+D_{\mathrm{shell}}^{\min} \;\le\; \frac{2(M+1-K)}{N} \;\le\; \frac{2(M+1)}{N}.
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[魔数丝数的精确最优值]
+\label{thm:closedform}
+取六方密排的「魔数」丝数
+\begin{equation}
+N = 1 + 3M(M+1),\qquad M\in\mathbb{Z}_{\ge1},
+\end{equation}
+并令 $n_0=1$、$n_m=6m$（$m\ge1$）。则 $D_{\mathrm{shell}}$ 的最优值为
+\begin{equation}
+\boxed{\;
+D_{\mathrm{shell}}^{\min}(N)
+= \frac{2M(M+1)}{\big(3M(M+1)+1\big)\big(4M(M+1)+1\big)}
+\;}
+\label{eq:closedform}
+\end{equation}
+并满足\textbf{精确恒等式}
+\begin{equation}
+2N\,D_{\mathrm{shell}}^{\min} \;=\; 1-\frac{1}{(2M+1)^2} \;=\; 1-\frac{1}{q}
+\;\xrightarrow[\ M\to\infty\ ]{}\; 1 ,
+\qquad\text{且}\qquad
+D_{\mathrm{shell}}^{\min} < \frac{1}{2N}.
+\label{eq:identity}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+见附录 \ref{app:proof}。
+\end{proof}
+
+\begin{theorem}[精确完美性判据]
+\label{thm:exact}
+$D_{\mathrm{shell}} = 0$ 当且仅当
+\begin{equation}
+N = t\,(2M+1)^2 = t\,q,\qquad t\in\mathbb{Z}_{\ge1},
+\label{eq:exactcond}
+\end{equation}
+此时层序 $n_0=t$、$n_m=8mt$ 严格满足 $n_m = N f_m$。
+\end{theorem}
+
+\begin{proof}
+$D_{\mathrm{shell}}=0$ 要求 $n_m = Nf_m$ 全为整数，即 $q\mid N$（由 \eqref{eq:fm}，
+$q f_0=1$、$q f_m=8m$，故 $Nf_m$ 整 $\iff q\mid N$）。
+反之 \eqref{eq:exactcond} 下 $Nf_0 = t$、$Nf_m = 8mt$ 均为整数。
+\end{proof}
+
+\begin{remark}[完美性与几何可行性是两个独立条件]
+定理 \ref{thm:exact} 给出的是\textbf{组合条件}。实际可达还需
+$n_m \le c_m$。由于 $c_0=1$，必须有 $t=1$，即 $N=q$；
+再由 $m=1$ 层 $n_1=8$ 与 \eqref{eq:cap} 得
+\begin{equation}
+8 \le c_1 = \left\lfloor\frac{\pi}{\arcsin\big(g/(2G)\big)}\right\rfloor
+\quad\Longleftrightarrow\quad
+\frac{G}{g} \;\ge\; \frac{1}{2\sin(\pi/8)} = 1.306563\ldots
+\quad\Longleftrightarrow\quad
+\varepsilon \;\ge\; 0.306563\ldots
+\label{eq:eps_exact}
+\end{equation}
+故\textbf{在 $G=g$（零膨胀）下，$D_{\mathrm{shell}}=0$ 不可能达到}；
+但在 $\varepsilon\ge 30.66\%$ 的适度膨胀下可以\textbf{严格达到}。
+\end{remark}
+
+\subsection{辅助判据}
+
+\begin{table}[htbp]
+\centering
+\caption{辅助判据及其判定阈值}
+\label{tab:aux}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{clll}
+\toprule
+判据 & 定义 & 理想值 & 说明 \\
+\midrule
+$D_{\mathrm{az}}$ & $\displaystyle\max_j\Big|\frac{1}{L_c}\int_0^{L_c}e^{\mathrm{i}\theta_j}\mathrm{d}z\Big|$ & $0$ & 方位覆盖均匀度 \\
+$D_{\mathrm{per}}$ & 周期末/初截面族的 Hausdorff 距离 & $0$ & 周期闭合性 (P3) \\
+$D_{\min}$ & 轨迹上丝间最小距离 & $\ge g$ & 无碰撞 (P4) \\
+$C_{\mathrm{env}}$ & $R_{\max}^{\text{编织}} / R_{\max}^{\text{密排}}$ & $\to 1$ & 包络代价 \\
+$\kappa_{\min}$ & 轨迹最小曲率半径 & $>0$ & 可制造性 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{完美性分级}
+
+综合上述判据，给出可直接套用的分级标准：
+
+\begin{table}[htbp]
+\centering
+\caption{完美性分级判定标准（$q=(2M+1)^2$）}
+\label{tab:grade}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{clll}
+\toprule
+等级 & $D_{\mathrm{shell}}$ & 其他要求 & 含义 \\
+\midrule
+\textbf{理想} & $=0$ & $\varepsilon\ge0.3066$ 且 (P2)(P3)(P4) 全满足 & 严格完美（须适度膨胀）\\
+\textbf{近完美} & $\le 1/(2N)$ & (P2)(P3)(P4) 全满足 & 达到魔数族的量化极限 \\
+\textbf{合格} & $\le 1/N$ & (P3)(P4) 满足 & 同量级，工程可接受 \\
+\textbf{不足} & $> 1/N$ & --- & 需改进层序设计 \\
+\textbf{无效} & --- & (P3) 或 (P4) 不满足 & 非可制造编织 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\section{可实现性定理：径向膨胀的必要条件}
+
+判据 (P1) 要求丝在径向层间移动（否则 $p_{j,m}$ 为二值分布，$D_{\mathrm{shell}}$
+取到上界）。但层间移动受几何硬约束。以下定理给出\textbf{精确}的必要条件，
+其常数由「同一环带上相邻两丝的弦长不得小于 $g$」确定。
+
+\begin{theorem}[径向膨胀定理]
+\label{thm:dilation}
+设环带宽度为 $G$，丝间最小中心距为 $g$，膨胀因子 $\varepsilon=(G-g)/g$。
+则\textbf{存在}满足 (P1)（即 $D_{\mathrm{shell}}=0$）的无碰撞编织，当且仅当
+\begin{equation}
+\boxed{\;\frac{G}{g} \;\ge\; \frac{1}{2\sin(\pi/8)} = 1.306563\ldots
+\qquad\Longleftrightarrow\qquad
+\varepsilon \;\ge\; \frac{1}{2\sin(\pi/8)}-1 = 0.306563\ldots\;}
+\label{eq:dilation}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+必要性：由定理 \ref{thm:exact}，$D_{\mathrm{shell}}=0$ 需 $n_m = Nf_m$ 为整数；
+又 $c_0=1$ 迫使 $t=1$，$N=q$，于是 $n_1 = 8$。
+半径 $G$ 的圆上均布 8 个点，相邻弦长为 $2G\sin(\pi/8)$，
+不得小于 $g$，故 $2G\sin(\pi/8)\ge g$，即 $G/g \ge 1/(2\sin(\pi/8))$。
+
+充分性：取 $N=q$、$n_m=8m$（$m\ge1$）、$n_0=1$。
+$m=1$ 层是约束最紧的一层（$n_m/(mG) = 8/g$ 与 $m$ 无关，而
+$\arcsin$ 单调增使 $\lfloor\pi/\arcsin(\cdot)\rfloor$ 关于 $m$ 不减），
+故 $G/g \ge 1/(2\sin(\pi/8))$ 时全部 $n_m\le c_m$，构造可行且 $D_{\mathrm{shell}}=0$。
+\end{proof}
+
+\begin{remark}[与六方密排的比较]
+六方密排（$G=g$）的层容量 $c_m = 6,12,18,25,\dots$ 与六方数 $6m$ 在 $m\le3$
+相同，故 $G=g$ 时最紧的 $m=1$ 层恰为 $6$，只能容纳 $n_1=6$，
+于是 $Nf_1 = 8 > 6$，\textbf{公平性 (P1) 必然被违反}——这正是
+$D_{\mathrm{shell}}>0$ 的几何根源。
+定理 \ref{thm:dilation} 说明：只要把径向间距放大约 $30.66\%$，
+即可让最紧的 $m=1$ 层容纳 8 根丝，从而\textbf{严格实现} (P1)。
+\end{remark}
+
+\begin{remark}[工程取舍]
+定理 \ref{thm:dilation} 给出一个\textbf{定量}结论：
+在「同包络」约束下（$G=g$，$\varepsilon=0$），
+$D_{\mathrm{shell}}=0$ \textbf{不可达}，只能取到魔数族的
+$D_{\mathrm{shell}}^{\min}\approx 1/(2N)$；
+而接受 $\varepsilon=30.66\%$ 的包络膨胀（半径比 $1.3066$、截面积比 $1.7071$）
+则可\textbf{严格达到} $D_{\mathrm{shell}}=0$。
+这一取舍应作为问题四结论的核心论证。
+\end{remark}
+
+\section{模型实例}
+
+\subsection{参数表}
+
+\begin{table}[htbp]
+\centering
+\caption{三种丝数下的模型参数（$d=0.14\Umm$，$g=0.15\Umm$，$G=g$）}
+\label{tab:instances}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lccc}
+\toprule
+项目 & $N=64$（降阶模型） & $N=61$（魔数，$M=4$） & $N=331$（物理模型，$M=10$）\\
+\midrule
+壳层数 $M$ & 6 & 4 & 10 \\
+$q=(2M+1)^2$ & 169 & 81 & 441 \\
+最优层序 $\{n_m\}$ & $1,3,6,9,12,15,18$ & $1,6,12,18,24$ & $1,6,12,\dots,60$ \\
+是否魔数（$N=1+3M(M+1)$）& 否 & 是 & 是 \\
+$D_{\mathrm{shell}}^{\min}$ & $1.942\times10^{-2}$ & $8.096\times10^{-3}$ & $1.507\times10^{-3}$ \\
+$1/(2N)$ & $7.813\times10^{-3}$ & $8.197\times10^{-3}$ & $1.511\times10^{-3}$ \\
+$2N D_{\mathrm{shell}}^{\min}$ & $2.485$ & $0.9877$ & $0.9977$ \\
+分级 & 不足 & 近完美 & 近完美 \\
+$\beta = d/\delta$ & $0.947$ & $0.947$ & $0.947$ \\
+$\Rac/\Rdc$（仿真） & --- & --- & $4.193$（规则绞合参照）\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{remark}
+$N=61$ 与 $N=331$ 同为魔数，其 $D_{\mathrm{shell}}$ 精确达到定理
+\ref{thm:closedform} 的闭式值，且满足恒等式 $2ND_{\mathrm{shell}}=1-1/q$
+（$0.98765$ 与 $0.99773$）；$N=64$ 非魔数，壳层容量无法与面积占比匹配，
+$D_{\mathrm{shell}}^{\min}$ 比同量级的 $N=61$ 大 $2.4$ 倍。
+\textbf{若丝数可调，应优先选魔数 $N=1+3M(M+1)$}。
+\end{remark}
+
+\begin{remark}[若要严格完美]
+取 $N=q=(2M+1)^2$ 且 $\varepsilon\ge0.3066$ 即可令 $D_{\mathrm{shell}}=0$。
+例如 $M=10$：$N=441$（比 $331$ 多 $33\%$），包络半径 $10.5G = 13.72\,g$
+（比六方 $10.5g$ 大 $30.66\%$）。若坚持包络 $\varnothing3.14\Umm$ 不变，
+则丝径须按 $1/1.3066$ 缩小至 $d' = 0.1072\Umm$。
+\end{remark}
+
+\subsection{模型使用流程}
+
+\begin{enumerate}[label=\textbf{步骤 \arabic*.}, leftmargin=3.6em, itemsep=3pt]
+\item \textbf{定参数}：由 $d$、$t_{\mathrm{ins}}$ 得 $g$；给定 $N$，
+选取使容量可行（$\sum_m c_m\ge N$）且 $D_{\mathrm{shell}}^{\min}$ 最小的 $M$；
+若 $N$ 可自由选择，优先取魔数 $N=1+3M(M+1)$。
+\item \textbf{定层序}：由定理 \ref{thm:general} 的闭式（或整数 DP）求最优
+$\{n_m\}$，并构造 $\mathcal{L}$ 使层 $m$ 恰占 $n_m$ 个站点（基线为块状排列）。
+\item \textbf{生成轨迹}：按式 \eqref{eq:station} 得各站点状态，
+按第 \ref{sec:interp} 节插值得 $C^1$ 轨迹。
+\item \textbf{算判据}：由轨迹积分得 $p_{j,m}$，按式 \eqref{eq:Dshell} 算
+$D_{\mathrm{shell}}$；另算 $D_{\mathrm{az}},D_{\mathrm{per}},D_{\min},C_{\mathrm{env}}$。
+\item \textbf{对表分级}：查表 \ref{tab:grade} 得完美性等级；
+若未达「近完美」，回到步骤 2 调整层序。
+\end{enumerate}
+
+\section{命题的数值验证}
+\label{sec:verify}
+
+全部命题已用程序独立验证，采用精确有理算术（\texttt{fractions.Fraction}）与
+精确整数动态规划（\texttt{scripts/q4\_def\_verify.py}），无浮点误差。
+
+\begin{table}[htbp]
+\centering
+\caption{命题验证结果汇总}
+\label{tab:verify}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{clll}
+\toprule
+命题 & 检验方式 & 结果 & 结论 \\
+\midrule
+\ref{prop:Atot} 面积占比闭式
+ & $\sum_m f_m = 1$ 对 $M=1\dots7$ & 恒为 $1$（精确有理数）& 精确成立 \\
+\ref{prop:equiv} 等变 $\Rightarrow$ 等履历
+ & 6 组平移量下比对壳层占比 & 最大偏差 $6.0\times10^{-6}$ & 数值成立 \\
+\ref{prop:occupancy} 占据平衡
+ & 逐站点统计层占据 & 全部站点恒为 $n_m$，失衡 0 处 & 成立 \\
+\ref{thm:general} 一般最优闭式
+ & 闭式 vs 整数 DP，$M=1\dots6$，$N$ 全扫 & 全部完全相等（196 组）& 精确成立 \\
+\ref{thm:closedform} 魔数闭式
+ & $M=1\dots39$ 闭式 vs DP & 全部完全相等 & 精确成立 \\
+\ref{thm:closedform} 恒等式
+ & $2ND_{\mathrm{shell}} = 1-1/q$，$M=1\dots39$ & 精确成立 & 精确成立 \\
+\ref{thm:exact} 精确完美判据
+ & 扫描 $N\le700$ 找 $D=0$ & 恰为 $q\mid N$，无一例外 & 精确成立 \\
+\ref{thm:dilation} 膨胀阈值
+ & 容量可行性二分扫描 & $G/g<1.30656$ 不可行，$\ge$ 可行 & 精确成立 \\
+\ref{thm:dilation} 严格完美构造
+ & $N=q$ 时 DP 求最优 & $D_{\mathrm{shell}}=0$（$M=1,2,4,5,10$）& 成立 \\
+\ref{thm:general} 通用上界
+ & $D\le 2(M+1)/N$，$M\le15$ 全扫 & 违反 0 次 & 成立 \\
+(P4) 无碰撞
+ & 站点内最近邻距离 & 恒为 $0.1500\Umm = g$ & 满足 \\
+(P3) 周期闭合
+ & $r_j(0)$ vs $r_j(L_c)$ & 最大差 $0$ & 严格闭合 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\section{结论}
+
+\begin{enumerate}[label=(\arabic*), leftmargin=2.4em, itemsep=3pt]
+\item \textbf{定义}：完美编织由 (P1)--(P4) 四条公理刻画，其中 (P1) 公平性是
+物理核心，(P2) 补方位公平性，(P3)(P4) 为可行性约束。
+
+\item \textbf{模型}：等变编织模型（式 \eqref{eq:equivariant}／\eqref{eq:station}）
+由「一条母轨迹 + 平移与旋转两种生成变换」给出，参数明确
+（$N,M,\{n_m\},\mathcal{L},\{G\}$），且\textbf{自动满足}等履历（命题 \ref{prop:equiv}）
+与占据平衡（命题 \ref{prop:occupancy}）。
+
+\item \textbf{判据}：主判据 $D_{\mathrm{shell}}$（式 \eqref{eq:Dshell}）可计算、可比较；
+其最优值有一般闭式 \eqref{eq:general} 与魔数族闭式 \eqref{eq:closedform}，
+并满足精确恒等式 $2ND_{\mathrm{shell}}=1-1/q$；通用上界 $D_{\mathrm{shell}}\le 2(M+1)/N$。
+分级标准见表 \ref{tab:grade}。
+
+\item \textbf{精确完美}：$D_{\mathrm{shell}}=0$ 当且仅当 $N=t(2M+1)^2$（定理 \ref{thm:exact}）；
+结合容量约束 $c_0=1$ 得 $N=(2M+1)^2$，且须 $\varepsilon\ge 30.66\%$
+（定理 \ref{thm:dilation}）。故\textbf{完美并非不可达，而是需要付出
+约 $30.66\%$ 的径向膨胀代价}；若拒绝该代价（$G=g$），
+则最优只能取到 $D_{\mathrm{shell}}\approx 1/(2N)$，即魔数族的近完美。
+工程目标因此是\textbf{在包络代价与换位公平性之间定量取舍}。
+\end{enumerate}
+
+\appendix
+
+\section{定理 \ref{thm:closedform} 的推导}
+\label{app:proof}
+
+取魔数 $N = 1+3A$，$A := M(M+1)$，$n_0=1$，$n_m=6m$，$q=(2M+1)^2$。
+
+\vspace{4pt}
+\textbf{第一步：面积占比。} 由 \eqref{eq:fm}，$f_0 = 1/q$，$f_m = 8m/q$。
+
+\vspace{4pt}
+\textbf{第二步：目标值与整数丝数之差。} 停留占比 $p_m = n_m/N$：
+
+\emph{中心项}
+\begin{equation}
+p_0 - f_0 = \frac{1}{N}-\frac{1}{q}
+= \frac{q-N}{Nq}.
+\end{equation}
+由 $q = 4A+1$、$N = 3A+1$，得 $q-N = A$，故
+\begin{equation}
+\left|p_0-f_0\right| = \frac{A}{Nq}.
+\end{equation}
+
+\emph{环带项}（$m\ge1$）
+\begin{equation}
+p_m - f_m = \frac{6m}{N}-\frac{8m}{q}
+= m\cdot\frac{6q-8N}{Nq}.
+\end{equation}
+由 $6q-8N = 6(4A+1)-8(3A+1) = 24A+6-24A-8 = -2$，故
+\begin{equation}
+\left|p_m-f_m\right| = \frac{2m}{Nq}.
+\end{equation}
+
+\vspace{4pt}
+\textbf{第三步：求和。}
+\begin{equation}
+\sum_{m=1}^{M}\frac{2m}{Nq}
+= \frac{2}{Nq}\cdot\frac{M(M+1)}{2}
+= \frac{A}{Nq}.
+\end{equation}
+
+\vspace{4pt}
+\textbf{第四步：合计。}
+\begin{equation}
+D_{\mathrm{shell}}^{\min}
+= \frac{A}{Nq} + \frac{A}{Nq}
+= \frac{2A}{Nq}
+= \frac{2M(M+1)}{\big(3M(M+1)+1\big)\big(4M(M+1)+1\big)} .
+\end{equation}
+
+\vspace{4pt}
+\textbf{第五步：恒等式与渐近。} 由上式
+\begin{equation}
+2N\,D_{\mathrm{shell}}^{\min} = \frac{4A}{q} = \frac{q-1}{q} = 1-\frac{1}{(2M+1)^2},
+\end{equation}
+其中用到 $q = 4A+1$。因 $q\ge9>1$，故 $2N D_{\mathrm{shell}}^{\min}<1$，
+即 $D_{\mathrm{shell}}^{\min} < \dfrac{1}{2N}$（自下方趋近）。
+当 $M\to\infty$ 时 $A\sim M^2$、$N\sim3M^2$、$q\sim4M^2$，故
+$D_{\mathrm{shell}}^{\min}\sim\dfrac{2M^2}{3M^2\cdot4M^2}=\dfrac{1}{6M^2}\sim\dfrac{1}{2N}$。
+证毕。
+
+\vspace{6pt}
+\hrule
+\vspace{6pt}
+
+\textbf{附录 B：定理 \ref{thm:general} 的说明。}
+把 $Nf_m = \lfloor Nf_m\rfloor + \phi_m$ 代入，
+最优整数解须把 $\sum \lfloor Nf_m\rfloor$ 与 $N$ 的差 $K=\sum\phi_m$（整数）
+通过「向上取整」分配出去；每向上取整一层 $m$，该项偏差为 $1-\phi_m$，
+未取整的层偏差为 $\phi_m$。为使总和最小，应选 $\phi_m$ 最大的 $K$ 层向上取整，
+得 $\sum_m|n_m-Nf_m| = K - \sum_{\text{top }K}\phi_m$，除以 $N$ 即 \eqref{eq:general}。
+数值验证见第 \ref{sec:verify} 节。
+
+\end{document}
