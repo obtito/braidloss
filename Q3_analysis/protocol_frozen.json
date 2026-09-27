@@ -1,0 +1,144 @@
+{
+  "schema": "q3-protocol-frozen-3",
+  "created": "2026-09-26",
+  "supersedes": "q3-protocol-frozen-2",
+  "status": "FROZEN",
+  "note": "问题三调优闭环协议冻结文件 v3。相对 v2 的修订：(a) 求解器真源换成精简版 q3_solver.m（4 方案、合法几何、零距离钳制）；(b) 删除 annulus 两族（是装填而非换位机制，且为旧几何 bug 源）；(c) 指标恢复单口径 J（PEEC 截面法：股间再分配+单丝趋肤）为主排序量，J_full 降级为 cfg.intra 可选事后修正；(d) 旧的 J_peec/J_full 双口径与 /8->/4 地板数值一并作废。frozen_variables 一经冻结不得修改；任何修改必须记录在 changes 数组。",
+
+  "operating": {
+    "frequency_Hz": 200000,
+    "current_rms_A": 20.0,
+    "sigma_S_per_m": 5.8e7,
+    "mu_r": 1.0,
+    "mu0_H_per_m": 1.2566370614359173e-06,
+    "eval_length_m": 1.0,
+    "rho_Cu_kg_per_m3": 8960.0,
+    "delta_um": 147.77165489999476
+  },
+
+  "strand": {
+    "N_strands": 331,
+    "strand_diameter_mm": 0.14,
+    "strand_radius_m": 7.0e-05,
+    "pitch_mm": 0.15,
+    "insulation_conductivity_S_per_m": 0.0,
+    "bare_copper_area_mm2": 5.095349124857286,
+    "min_center_spacing_m": 0.00015,
+    "d_floor_m": 0.00014
+  },
+
+  "layout": {
+    "type": "hex_rings",
+    "m_rings": 10,
+    "ring_counts": [1, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60],
+    "ring_radii_mm": [0.0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.2, 1.35, 1.5],
+    "envelope_radius_mm": 1.5,
+    "envelope_diameter_mm": 3.0
+  },
+
+  "frozen_variables": [
+    "operating.frequency_Hz",
+    "operating.current_rms_A",
+    "operating.sigma_S_per_m",
+    "operating.mu_r",
+    "operating.eval_length_m",
+    "strand.N_strands",
+    "strand.strand_diameter_mm",
+    "strand.pitch_mm",
+    "strand.bare_copper_area_mm2",
+    "layout.type",
+    "layout.m_rings"
+  ],
+
+  "solver": {
+    "single_source_of_truth": "Question/Q3_PEEC/q3_solver.m",
+    "smoke_gate": "Question/Q3_PEEC/q3_solver_selftest.m",
+    "geometry_convention": "分位数层路径 + 占位守恒（任一截面每环股数恒为 1,6,...,60）+ 槽位重排；最小股心距由构造保证 >= 2a=140um 并硬断言，零距离钳制（与旧核心的 2~3um 重叠 + 钳制兜底相对立）。",
+    "scheme_families": ["straight", "twist", "braid", "counter_braid"],
+    "scheme_mechanisms": {
+      "straight": "无换位（锚点）",
+      "twist": "仅周向刚体旋转，半径固定（Q2 绞合锚点）",
+      "braid": "单族，径向分位数层遍历（径向换位）",
+      "counter_braid": "双反向族（按环奇偶 ±），径向遍历 + 交叉解耦 cos(2*alpha)"
+    },
+    "regression_anchor": {
+      "straight_Rac_mohm": 14.357229796331,
+      "twist_P40_Rac_mohm": 14.0359392794269,
+      "twist_sbar": 1.015070108124386,
+      "isolated_strand_ratio": 1.001048146746,
+      "selftest_tolerance_mohm": 5e-4,
+      "note": "自检容差 5e-4 mΩ；实测与 Q2 PEEC 逐位一致（机器精度）"
+    },
+    "removed_on_2026-09-26": [
+      "Question/Q3_PEEC/q3_peec_core.m (旧五方案核心，非法几何)",
+      "Question/Q3_PEEC/smoke_test_q3_core.m / .log",
+      "Question/Q3_analysis/solver/ (Pi 草稿，/8 常量错误)"
+    ]
+  },
+
+  "metrics": {
+    "J": "R_ac/R_dc，PEEC 截面法（股间电流再分配 + 单丝趋肤）；主排序量；理论下界 1.00（完美均流，仅余单丝趋肤）。",
+    "J_intra_optional": "cfg.intra=true 时叠加解析股内邻近项 C*<B^2>（C=sigma*pi*a^4*omega^2/4，RMS 场约定）；仅对 Top-2 事后补算，最终以 COMSOL 为准，不进主排序。",
+    "report_protocol_four_piece_set": ["J", "eta_I_cplx", "P_W_per_m", "sbar (plus copper mass per meter)"],
+    "note": "J 对铜重/米盲视（度量护栏），任何排序必须四件套并列，缺一即质疑。"
+  },
+
+  "main_variables": {
+    "alpha_deg": [10, 15, 20, 25, 30, 35, 40, 45],
+    "Lambda_mm": [20, 30, 40, 60, 80],
+    "pitch_mm_twist_scan": [20, 40, 80, 120],
+    "K_segments": [8, 16, 32],
+    "alpha_note": "编织角；收益翼 cos(2*alpha)（两反向族交叉解耦）对代价翼 1/cos(alpha)（丝长/铜重）。",
+    "Lambda_note": "径向遍历周期；预期 J(Lambda) 一阶平坦（制造约束而非电磁变量）。",
+    "deferred": ["annulus/hollow-ring packing", "sub-bundle granularity m (needs N=336 two-level)", "strand diameter d sensitivity (d and N coupled at fixed A_Cu)"]
+  },
+
+  "physics_floor": {
+    "J_floor": 1.0,
+    "out_of_range_rule": "J 不得低于 1.00；低于即数据错误，回退自检。",
+    "legacy_Jfull_floors_obsolete": {
+      "J_floor_Jfull_v1_value": 1.681,
+      "J_floor_Jfull_solid_disk_approx": 2.37,
+      "reason": "v2 的 J_peec/J_full 双口径与 /8->/4 修正随 v3 单口径化一并作废；股内邻近项的确定性数值改由 COMSOL 定案。"
+    }
+  },
+
+  "measured_single_points": {
+    "note": "q3_solver.m 自检实测（alpha=25deg, K=16, Lambda=40mm, intra=false）；用于扫描前的量级确认。",
+    "straight": { "J": 4.242996, "Rac_mohm": 14.357230, "sbar": 1.0, "eta_cplx_pct": 342.2, "center_mA": 0.77 },
+    "twist_P40": { "J": 4.086757, "Rac_mohm": 14.035939, "sbar": 1.015070, "eta_cplx_pct": 318.9, "center_mA": 3.79 },
+    "braid_a25": { "J": 1.1775, "Rac_mohm": 4.2239, "sbar": 1.06010, "eta_cplx_pct": 73.3, "center_mA": 66.44, "min_center_dist_um": 150.0 },
+    "counter_braid_a25": { "J": 1.9637, "Rac_mohm": 7.0441, "sbar": 1.06010, "eta_cplx_pct": 228.3, "center_mA": 168.23, "min_center_dist_um": 150.0 }
+  },
+
+  "q2_baselines_comsol": {
+    "circular": { "Rac_mohm": 14.8996775797961, "ratio": 4.40330542877845, "eta_cplx_pct": 338.187231594885, "center_mA": 0.5401834915491477, "outer_loss_pct": 80.75337039480056 },
+    "twist_P40": { "Rac_mohm": 14.4011818996657, "ratio": 4.19310231116282, "eta_cplx_pct": 321.301427849913, "center_mA": 3.6839416464828147, "outer_loss_pct": 79.6704288518963, "Rdc_mohm": 3.4344933252229513 }
+  },
+
+  "peec_vs_comsol_systematic_offset": {
+    "circular": -3.9058,
+    "twist": -2.5362,
+    "note": "PEEC 未解析股内邻近再分布，系统性低于 COMSOL；缺口恰为股内邻近损耗。故 PEEC 只用于方案相对排序，绝对值由 COMSOL 定案。"
+  },
+
+  "logging_requirement": {
+    "dual_channel_log": "Question/Q3_PEEC/q3_tuning_log.txt",
+    "rule": "闭环主脚本必须实现 logline 局部函数（控制台 + 文件同时输出），每一个 Round / 每一次评估 / 每一次决策都写入日志，含时间戳、Round 号、方案与参数、指标四件套、相对上一轮的变化与决策理由",
+    "csv_outputs": ["q3_scan_alpha.csv", "q3_scan_log.csv", "q3_sensitivity.csv"],
+    "json_outputs": ["q3_optimal.json"]
+  },
+
+  "changes": [
+    {
+      "version": "v1 -> v2",
+      "fields": ["metrics", "physics_floor", "solver", "logging_requirement"],
+      "reason": "接管 WB 已验证核心；指标改双口径；地板常量 /8->/4 修正；补双通道日志硬性要求"
+    },
+    {
+      "version": "v2 -> v3",
+      "fields": ["solver", "metrics", "main_variables", "physics_floor", "measured_single_points"],
+      "reason": "精简重写求解器为 q3_solver.m（4 方案、分位数层路径合法几何、零钳制）；删除 annulus 两族；指标单口径化（J 主排序 + 四件套护栏，intra 降级为可选事后项）；旧 J_full 双口径与地板数值作废；补自检实测单点。"
+    }
+  ]
+}

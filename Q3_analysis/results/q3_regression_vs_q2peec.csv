@@ -1,0 +1,19 @@
+case,q2_reference,quantity,q3_value,q2_peec_value,rel_diff
+hexagonal,Q2_COMSOL hexagonal straight bundle (hex tiling),Rac_mohm,15.1469603511422,15.1469603511422,4.69099224721031e-16
+hexagonal,Q2_COMSOL hexagonal straight bundle (hex tiling),ratio,4.47638496782754,4.47638496782754,1.98414217294446e-16
+hexagonal,Q2_COMSOL hexagonal straight bundle (hex tiling),eta_cplx_pct,615.772804547651,615.772804547651,3.69249297409718e-16
+hexagonal,Q2_COMSOL hexagonal straight bundle (hex tiling),outer_mean_mA,258.256959076294,258.256959076294,6.60312338503321e-16
+hexagonal,Q2_COMSOL hexagonal straight bundle (hex tiling),P_W_m,6.05878414045688,6.05878414045688,4.39780523175967e-16
+hexagonal,Q2_COMSOL hexagonal straight bundle (hex tiling),mean_sbar_minus1,0,0,0
+circular,Q2_Circular_COMSOL circular straight bundle,Rac_mohm,14.357229796331,14.357229796331,4.94902391227088e-16
+circular,Q2_Circular_COMSOL circular straight bundle,ratio,4.24299570013039,4.24299570013039,4.18656290258711e-16
+circular,Q2_Circular_COMSOL circular straight bundle,eta_cplx_pct,342.19004767258,342.19004767258,6.64466067875801e-16
+circular,Q2_Circular_COMSOL circular straight bundle,outer_mean_mA,260.330198885514,260.330198885514,1.52845860268652e-15
+circular,Q2_Circular_COMSOL circular straight bundle,P_W_m,5.7428919185324,5.7428919185324,6.18627989033859e-16
+circular,Q2_Circular_COMSOL circular straight bundle,mean_sbar_minus1,0,0,0
+twist,Q2_RegularTwist_COMSOL P=40 mm rigid twist,Rac_mohm,14.0359392794269,14.0359392794269,1.13901971477145e-15
+twist,Q2_RegularTwist_COMSOL P=40 mm rigid twist,ratio,4.08675689550676,4.08675689550677,2.17330867093328e-15
+twist,Q2_RegularTwist_COMSOL P=40 mm rigid twist,eta_cplx_pct,318.893470546927,318.893470546921,1.76469541930994e-14
+twist,Q2_RegularTwist_COMSOL P=40 mm rigid twist,outer_mean_mA,246.128731998512,246.128731998512,1.73212464060733e-15
+twist,Q2_RegularTwist_COMSOL P=40 mm rigid twist,P_W_m,5.61437571177075,5.61437571177076,1.10738027825002e-15
+twist,Q2_RegularTwist_COMSOL P=40 mm rigid twist,mean_sbar_minus1,0.015070108124386,0.015070108124386,1.84176353524071e-15

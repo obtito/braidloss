@@ -1,0 +1,82 @@
+2026-09-26 19:43:20  ===== Q3 sweep start =====
+2026-09-26 19:43:20  anchors: straight J=4.2430 Rac=14.3572 | twist J=4.0868 Rac=14.0359
+2026-09-26 19:43:22  braid          alpha= 10.0  J=1.02439  Rac=3.5053  P=1.4021  sbar=1.01126  eta=6.0%  ctr=61.04mA  min=150.0um
+2026-09-26 19:43:23  braid          alpha= 15.0  J=1.04677  Rac=3.6206  P=1.4482  sbar=1.02219  eta=7.5%  ctr=61.20mA  min=150.0um
+2026-09-26 19:43:24  braid          alpha= 20.0  J=1.07999  Rac=3.7940  P=1.5176  sbar=1.03820  eta=9.5%  ctr=61.33mA  min=150.0um
+2026-09-26 19:43:25  braid          alpha= 25.0  J=1.12618  Rac=4.0397  P=1.6159  sbar=1.06010  eta=11.1%  ctr=61.41mA  min=150.0um
+2026-09-26 19:43:25  braid          alpha= 30.0  J=1.18868  Rac=4.3804  P=1.7522  sbar=1.08907  eta=12.2%  ctr=61.46mA  min=150.0um
+2026-09-26 19:43:26  braid          alpha= 35.0  J=1.27258  Rac=4.8522  P=1.9409  sbar=1.12682  eta=13.0%  ctr=61.48mA  min=150.0um
+2026-09-26 19:43:26  braid          alpha= 40.0  J=1.38580  Rac=5.5139  P=2.2056  sbar=1.17588  eta=13.4%  ctr=61.48mA  min=150.0um
+2026-09-26 19:43:27  braid          alpha= 45.0  J=1.54097  Rac=6.4655  P=2.5862  sbar=1.23998  eta=13.5%  ctr=61.46mA  min=150.0um
+2026-09-26 19:43:28  counter_braid  alpha= 10.0  J=1.05819  Rac=3.6210  P=1.4484  sbar=1.01126  eta=50.0%  ctr=81.65mA  min=150.0um
+2026-09-26 19:43:28  counter_braid  alpha= 15.0  J=1.17096  Rac=4.0502  P=1.6201  sbar=1.02219  eta=119.0%  ctr=105.79mA  min=150.0um
+2026-09-26 19:43:29  counter_braid  alpha= 20.0  J=1.37306  Rac=4.8236  P=1.9294  sbar=1.03820  eta=199.8%  ctr=134.61mA  min=150.0um
+2026-09-26 19:43:29  counter_braid  alpha= 25.0  J=1.67671  Rac=6.0145  P=2.4058  sbar=1.06010  eta=270.1%  ctr=160.97mA  min=150.0um
+2026-09-26 19:43:30  counter_braid  alpha= 30.0  J=2.08542  Rac=7.6850  P=3.0740  sbar=1.08907  eta=369.4%  ctr=188.83mA  min=150.0um
+2026-09-26 19:43:31  counter_braid  alpha= 35.0  J=2.61294  Rac=9.9629  P=3.9851  sbar=1.12682  eta=411.8%  ctr=214.52mA  min=150.0um
+2026-09-26 19:43:31  counter_braid  alpha= 40.0  J=3.30602  Rac=13.1543  P=5.2617  sbar=1.17588  eta=444.4%  ctr=236.55mA  min=150.0um
+2026-09-26 19:43:32  counter_braid  alpha= 45.0  J=4.21834  Rac=17.6992  P=7.0797  sbar=1.23998  eta=478.8%  ctr=258.98mA  min=150.0um
+2026-09-26 19:43:33  Round1 done: 18 rows -> q3_scan_alpha.csv
+2026-09-26 19:43:33  best braid: alpha*=10.0 J*=1.02439
+2026-09-26 19:43:33  best counter_braid: alpha*=10.0 J*=1.05819
+2026-09-26 19:43:34  braid          alpha=10.0 Lambda=20  J=1.04577  Rac=3.6079  sbar=1.01957  eta=18.0%
+2026-09-26 19:43:34  braid          alpha=10.0 Lambda=30  J=1.02961  Rac=3.5307  sbar=1.01342  eta=9.5%
+2026-09-26 19:43:35  braid          alpha=10.0 Lambda=40  J=1.02439  Rac=3.5053  sbar=1.01126  eta=6.0%
+2026-09-26 19:43:36  braid          alpha=10.0 Lambda=60  J=1.02087  Rac=3.4879  sbar=1.00972  eta=3.8%
+2026-09-26 19:43:36  braid          alpha=10.0 Lambda=80  J=1.01968  Rac=3.4820  sbar=1.00917  eta=3.4%
+2026-09-26 19:43:37  counter_braid  alpha=10.0 Lambda=20  J=1.06831  Rac=3.6856  sbar=1.01957  eta=45.2%
+2026-09-26 19:43:37  counter_braid  alpha=10.0 Lambda=30  J=1.05989  Rac=3.6345  sbar=1.01342  eta=50.7%
+2026-09-26 19:43:38  counter_braid  alpha=10.0 Lambda=40  J=1.05819  Rac=3.6210  sbar=1.01126  eta=50.0%
+2026-09-26 19:43:39  counter_braid  alpha=10.0 Lambda=60  J=1.05887  Rac=3.6178  sbar=1.00972  eta=62.2%
+2026-09-26 19:43:39  counter_braid  alpha=10.0 Lambda=80  J=1.06033  Rac=3.6208  sbar=1.00917  eta=67.3%
+2026-09-26 19:43:39  Round2 done: 10 rows -> q3_sensitivity.csv
+2026-09-26 19:43:39  OPTIMAL: braid alpha=10.0 Lambda=80.0 J=1.01968 (vs straight 4.2430, -76.0%)
+2026-09-26 19:43:39  ===== Q3 sweep end =====
+2026-09-26 19:44:23  ===== Q3 sweep start =====
+2026-09-26 19:44:24  anchors: straight J=4.2430 Rac=14.3572 | twist J=4.0868 Rac=14.0359
+2026-09-26 19:44:25  braid          alpha=  2.0  J=1.00799  Rac=3.4215  P=1.3686  sbar=1.00314  eta=6.4%  ctr=60.71mA  min=150.0um
+2026-09-26 19:44:26  braid          alpha=  4.0  J=1.00999  Rac=3.4317  P=1.3727  sbar=1.00414  eta=6.3%  ctr=60.79mA  min=150.0um
+2026-09-26 19:44:27  braid          alpha=  6.0  J=1.01337  Rac=3.4489  P=1.3796  sbar=1.00582  eta=6.2%  ctr=60.88mA  min=150.0um
+2026-09-26 19:44:27  braid          alpha=  8.0  J=1.01815  Rac=3.4734  P=1.3894  sbar=1.00819  eta=6.0%  ctr=60.96mA  min=150.0um
+2026-09-26 19:44:28  braid          alpha= 10.0  J=1.02439  Rac=3.5053  P=1.4021  sbar=1.01126  eta=6.0%  ctr=61.04mA  min=150.0um
+2026-09-26 19:44:28  braid          alpha= 15.0  J=1.04677  Rac=3.6206  P=1.4482  sbar=1.02219  eta=7.5%  ctr=61.20mA  min=150.0um
+2026-09-26 19:44:29  braid          alpha= 20.0  J=1.07999  Rac=3.7940  P=1.5176  sbar=1.03820  eta=9.5%  ctr=61.33mA  min=150.0um
+2026-09-26 19:44:29  braid          alpha= 25.0  J=1.12618  Rac=4.0397  P=1.6159  sbar=1.06010  eta=11.1%  ctr=61.41mA  min=150.0um
+2026-09-26 19:44:30  braid          alpha= 30.0  J=1.18868  Rac=4.3804  P=1.7522  sbar=1.08907  eta=12.2%  ctr=61.46mA  min=150.0um
+2026-09-26 19:44:30  braid          alpha= 35.0  J=1.27258  Rac=4.8522  P=1.9409  sbar=1.12682  eta=13.0%  ctr=61.48mA  min=150.0um
+2026-09-26 19:44:31  braid          alpha= 40.0  J=1.38580  Rac=5.5139  P=2.2056  sbar=1.17588  eta=13.4%  ctr=61.48mA  min=150.0um
+2026-09-26 19:44:31  braid          alpha= 45.0  J=1.54097  Rac=6.4655  P=2.5862  sbar=1.23998  eta=13.5%  ctr=61.46mA  min=150.0um
+2026-09-26 19:44:32  counter_braid  alpha=  2.0  J=1.00801  Rac=3.4216  P=1.3686  sbar=1.00314  eta=8.2%  ctr=60.82mA  min=150.0um
+2026-09-26 19:44:32  counter_braid  alpha=  4.0  J=1.01107  Rac=3.4354  P=1.3741  sbar=1.00414  eta=10.3%  ctr=62.64mA  min=150.0um
+2026-09-26 19:44:33  counter_braid  alpha=  6.0  J=1.01916  Rac=3.4687  P=1.3875  sbar=1.00582  eta=20.9%  ctr=66.94mA  min=150.0um
+2026-09-26 19:44:33  counter_braid  alpha=  8.0  J=1.03383  Rac=3.5269  P=1.4108  sbar=1.00819  eta=33.6%  ctr=73.74mA  min=150.0um
+2026-09-26 19:44:34  counter_braid  alpha= 10.0  J=1.05819  Rac=3.6210  P=1.4484  sbar=1.01126  eta=50.0%  ctr=81.65mA  min=150.0um
+2026-09-26 19:44:34  counter_braid  alpha= 15.0  J=1.17096  Rac=4.0502  P=1.6201  sbar=1.02219  eta=119.0%  ctr=105.79mA  min=150.0um
+2026-09-26 19:44:35  counter_braid  alpha= 20.0  J=1.37306  Rac=4.8236  P=1.9294  sbar=1.03820  eta=199.8%  ctr=134.61mA  min=150.0um
+2026-09-26 19:44:35  counter_braid  alpha= 25.0  J=1.67671  Rac=6.0145  P=2.4058  sbar=1.06010  eta=270.1%  ctr=160.97mA  min=150.0um
+2026-09-26 19:44:36  counter_braid  alpha= 30.0  J=2.08542  Rac=7.6850  P=3.0740  sbar=1.08907  eta=369.4%  ctr=188.83mA  min=150.0um
+2026-09-26 19:44:36  counter_braid  alpha= 35.0  J=2.61294  Rac=9.9629  P=3.9851  sbar=1.12682  eta=411.8%  ctr=214.52mA  min=150.0um
+2026-09-26 19:44:37  counter_braid  alpha= 40.0  J=3.30602  Rac=13.1543  P=5.2617  sbar=1.17588  eta=444.4%  ctr=236.55mA  min=150.0um
+2026-09-26 19:44:37  counter_braid  alpha= 45.0  J=4.21834  Rac=17.6992  P=7.0797  sbar=1.23998  eta=478.8%  ctr=258.98mA  min=150.0um
+2026-09-26 19:44:39  Round1 done: 26 rows -> q3_scan_alpha.csv
+2026-09-26 19:44:39  best braid: alpha*=2.0 J*=1.00799
+2026-09-26 19:44:39  best counter_braid: alpha*=2.0 J*=1.00801
+2026-09-26 19:44:40  braid          alpha=2.0 Lambda=20  J=1.02981  Rac=3.5247  sbar=1.01152  eta=18.4%
+2026-09-26 19:44:40  braid          alpha=2.0 Lambda=30  J=1.01333  Rac=3.4471  sbar=1.00532  eta=10.2%
+2026-09-26 19:44:41  braid          alpha=2.0 Lambda=40  J=1.00799  Rac=3.4215  sbar=1.00314  eta=6.4%
+2026-09-26 19:44:42  braid          alpha=2.0 Lambda=60  J=1.00443  Rac=3.4041  sbar=1.00158  eta=3.3%
+2026-09-26 19:44:42  braid          alpha=2.0 Lambda=80  J=1.00326  Rac=3.3983  sbar=1.00104  eta=2.5%
+2026-09-26 19:44:43  braid          alpha=2.0 Lambda=120  J=1.00245  Rac=3.3942  sbar=1.00065  eta=2.1%
+2026-09-26 19:44:44  braid          alpha=2.0 Lambda=160  J=1.00217  Rac=3.3928  sbar=1.00051  eta=2.0%
+2026-09-26 19:44:44  braid          alpha=2.0 Lambda=240  J=1.00197  Rac=3.3918  sbar=1.00041  eta=1.9%
+2026-09-26 19:44:45  counter_braid  alpha=2.0 Lambda=20  J=1.02950  Rac=3.5237  sbar=1.01152  eta=22.3%
+2026-09-26 19:44:46  counter_braid  alpha=2.0 Lambda=30  J=1.01327  Rac=3.4469  sbar=1.00532  eta=12.5%
+2026-09-26 19:44:46  counter_braid  alpha=2.0 Lambda=40  J=1.00801  Rac=3.4216  sbar=1.00314  eta=8.2%
+2026-09-26 19:44:47  counter_braid  alpha=2.0 Lambda=60  J=1.00451  Rac=3.4044  sbar=1.00158  eta=4.6%
+2026-09-26 19:44:48  counter_braid  alpha=2.0 Lambda=80  J=1.00334  Rac=3.3986  sbar=1.00104  eta=3.8%
+2026-09-26 19:44:48  counter_braid  alpha=2.0 Lambda=120  J=1.00254  Rac=3.3945  sbar=1.00065  eta=3.2%
+2026-09-26 19:44:49  counter_braid  alpha=2.0 Lambda=160  J=1.00226  Rac=3.3931  sbar=1.00051  eta=3.2%
+2026-09-26 19:44:50  counter_braid  alpha=2.0 Lambda=240  J=1.00207  Rac=3.3921  sbar=1.00041  eta=3.3%
+2026-09-26 19:44:50  Round2 done: 16 rows -> q3_sensitivity.csv
+2026-09-26 19:44:50  OPTIMAL: braid alpha=2.0 Lambda=240.0 J=1.00197 (vs straight 4.2430, -76.4%)
+2026-09-26 19:44:50  ===== Q3 sweep end =====

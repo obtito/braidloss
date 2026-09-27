@@ -1,0 +1,5 @@
+case,N,stations,period_m,topology
+rigid_twist,400,501,0.25,rigid_twist
+shell_exchange,400,501,0.25,shell_exchange
+full_exchange,400,501,0.25,full_exchange
+final_484,484,501,0.5,full_exchange

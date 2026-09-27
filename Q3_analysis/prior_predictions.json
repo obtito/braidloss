@@ -1,0 +1,120 @@
+{
+  "schema": "q3-prior-predictions-2",
+  "created": "2026-09-26",
+  "supersedes": "q3-prior-predictions-1",
+  "status": "PARTIALLY_FALSIFIED_BEFORE_FIRST_PI_RUN",
+
+  "integrity_note": "诚实披露：本文件 v1 由 Pi 团队于 2026-09-26 17:35 书面化，当时 WB 侧的单点实测（Question/Q3_PEEC/smoke_test_q3_core.log，17:16-17:18 生成）已在磁盘上，但 Pi 团队尚未读取该目录，v1 的数值预期全部来自冻结标准第六节的『跑数前』区间表。因此下列『证伪』部分是 v1 与既有实测的冲突，不是 Pi 团队跑出来的结果；处理方式为：保留 v1 原文 + 记录冲突 + 用模型修正（/8->/4）解释，不静默改目标。",
+
+  "v1_preserved": {
+    "P1": "J(alpha) 曲线单峰：存在内点最优 alpha*",
+    "P2": "全网最优 J 落在 (1.5, 4.4) 区间",
+    "P3": "eta_I 随换位速率（1/Lambda）增加单调下降",
+    "P4": "径向换位方案显著优于纯周向方案：J 降幅 >= 20%",
+    "P5": "S3/S4 三体征：中心股电流 >= 10 mA、eta_I < 50%、最外环 60 股损耗占比降到 30% 附近",
+    "P6": "分段收敛：K 加倍时 Rac 变化 < 0.5%，且 K_per >= 8 后进入平台",
+    "P7": "PEEC 与 COMSOL 对 >=3 个方案给出相同优劣排序，且 PEEC 系统性低于 COMSOL 2.5%~3.9%"
+  },
+
+  "conflict_record_v1_vs_measured": [
+    {
+      "id": "P2",
+      "measured": "annulus_braid alpha=25 K=16 Lambda=40: J_peec = 1.3824, J_full = 2.9359",
+      "conflict": "J_peec = 1.382 低于 v1 区间下界 1.5；J_full = 2.936 在区间内",
+      "resolution": "v1 只定义了单一 J，未区分口径。按现行双口径纪律：J_peec 下界为 1.00，1.382 合法；越界判据只对 J_full 生效。P2 在 J_full 口径下『兑现』，在 J_peec 口径下『证伪』——这正说明单一口径的预测本身就是缺陷。"
+    },
+    {
+      "id": "P4",
+      "measured": "J_peec: straight 4.243 -> braid 1.642 -> annulus_braid 1.382（降幅 61%/67%）",
+      "conflict": "P4 在 J_peec 口径下大幅兑现（远超 20%）",
+      "resolution": "兑现。但 J_full 口径下 braid 4.694 > straight 4.540——总损耗反而恶化。P4 必须补一句口径限定才是完整预测。"
+    },
+    {
+      "id": "P5",
+      "measured": "braid: 中心股 109.00 mA（v1 要求 >=10 mA）、eta_I 191.8%（v1 要求 <50%，未达）、外层损耗 18.0%（v1 要求 ~30%，更低即更好）",
+      "conflict": "中心股与外层损耗达成，eta_I 191.8% 未达 <50%",
+      "resolution": "部分兑现。eta_I 仍高但中心股已从 0.77 mA 抬到 109 mA（142 倍），说明换位已生效；eta_I 口径需按复数/幅值分别报告，且钳制伪艺（2.19% 股对）可能污染电流分布。"
+    },
+    {
+      "id": "P6",
+      "measured": "尚无 K 收敛数据",
+      "conflict": "无",
+      "resolution": "待 T2' 标定阶段实测。"
+    },
+    {
+      "id": "P7",
+      "measured": "尚无 COMSOL 回传",
+      "conflict": "无",
+      "resolution": "待队友 COMSOL 回传。"
+    }
+  ],
+
+  "model_correction_record": [
+    {
+      "id": "MC1",
+      "what": "股内邻近项常量 sigma*pi*a^4*omega^2/8 -> /4（WB 修订记录 R8）",
+      "why": "求解器相量为 RMS 标度，原常量配峰值场，使 P_intra 系统性减半（0.2008 -> 0.402 W/m）",
+      "impact": "实心盘完美换位地板由 1.681 抬到约 2.37；v1 预测与冻结标准第六节 C/D 区间（2.0-2.5 / 1.5-1.7）均据此偏乐观",
+      "status": "已由 WB 修复并验证（0.402 vs Q2 COMSOL 0.396 W/m）"
+    },
+    {
+      "id": "MC2",
+      "what": "J_full 的 braid/annulus 结果可能系统性偏低",
+      "why": "求解器对标量电流锚定 COMSOL 有效（0.402 vs 0.396），但对均匀电流低估约 36 倍（丢失平滑束级相干场 2.95e-5 vs 1.07e-3）",
+      "impact": "C=4.69 / D=2.94 可能是下界；地板数值需重新推导。定性结论（地板远高于 1.0）不受影响",
+      "status": "开放项——闭环跑完后必须单列一节讨论，并在 COMSOL L5 对照中重点核验"
+    }
+  ],
+
+  "restated_open_predictions_for_the_loop": [
+    {
+      "id": "R1",
+      "statement": "J_peec(alpha) 单峰，最优点 alpha* 落在 15-35 deg（收益翼 vs 1/cos(alpha) 丝长罚）",
+      "falsify_if": "单调或无内点极值",
+      "status": "FALSIFIED (2026-09-26): braid J 随 alpha 单调递减(alpha 越小越好), counter 单调递增; 无内点极值"
+    },
+    {
+      "id": "R2",
+      "statement": "J(Lambda) 一阶平坦（Lambda 是制造约束而非电磁优化变量）",
+      "falsify_if": "J 随 Lambda 变化超过 10%",
+      "status": "WEAKLY HELD (2026-09-26): 20->240mm 变化 2.8% (<10%), 但单调(越长期越好), 非严格平坦"
+    },
+    {
+      "id": "R3",
+      "statement": "K=8/16/32 分段收敛，相邻档 Rac 变化 < 0.5%",
+      "falsify_if": "相邻档 >= 0.5%",
+      "status": "待测"
+    },
+    {
+      "id": "R4",
+      "statement": "P0 几何修复（逐股锁相 + annulus 保距重排）后，钳制股对占比降到 <0.1%，且 J_full 排序不变",
+      "falsify_if": "排序改变或钳制占比未降",
+      "status": "待测"
+    },
+    {
+      "id": "R5",
+      "statement": "四族最优中 annulus_braid 仍以 P(W/m) 最低胜出（实心盘全半径编织总损耗劣于基线）",
+      "falsify_if": "braid 或 straight 的 P 低于 annulus_braid",
+      "status": "待测"
+    }
+  ],
+
+  "sweep_outcomes_2026_09_26": {
+    "solver": "Question/Q3_PEEC/q3_solver.m (K*=256 locked)",
+    "raw": "Question/Q3_PEEC/{q3_convergence.csv,q3_scan_alpha.csv,q3_sensitivity.csv,q3_optimal.json,q3_tuning_log.txt}; 记录见 results/q3_sweep_outcomes.md",
+    "anchors": { "straight_J": 4.242996, "twist_P40_J": 4.086757 },
+    "key_results": {
+      "radial_dominated": "straight 4.243 -> braid ~1.0-1.1 (eta 342%->2-13%, center 0.77mA->~60mA ideal)",
+      "azimuthal_is_cost": "braid J monotone increasing in alpha (1.008@2deg -> 1.541@45deg), sbar 1.001->1.240",
+      "counter_hurts": "counter not better than braid anywhere; family imbalance eta up to 478% at 45deg",
+      "lambda_monotone": "longer Lambda better (braid alpha=2: 1.0298@20mm -> 1.0020@240mm)",
+      "model_optimum": "braid alpha=2deg Lambda=240mm J=1.00197 (-76.4% vs baseline)"
+    },
+    "cos2alpha_prediction": "NOT OBSERVED: counter-rotating two-family decoupling predicted in pre-research gave no benefit",
+    "caveats": [
+      "J is PEEC inter-strand + skin only; intra-strand proximity (which grows after equalization) excluded -> absolute level needs COMSOL",
+      "music-chairs slot model assumes zero-cost angular slot swaps; at alpha->0 physically impossible (no crossings) -> small-alpha optimum is model-optimistic; use alpha>=10deg for manufacturable claims",
+      "COMSOL confirmation target: braid alpha=10-15deg, Lambda=40mm"
+    ]
+  }
+}

@@ -1,0 +1,789 @@
+{
+  "schema": "q3-calibration-t2p-1",
+  "created": "2026-09-26 20:21:59",
+  "matlab": "2024b",
+  "task": "T2p: G1 directional calibration vs Q2 COMSOL + K segment-convergence gate",
+  "incident": {
+    "what": "任务执行期间冻结真源被并发进程删除/替换",
+    "detected": "2026-09-26 20:21:59",
+    "deleted": [
+      "Question/Q3_PEEC/q3_peec_core.m",
+      "Question/Q3_PEEC/smoke_test_q3_core.m",
+      "Question/Q3_PEEC/smoke_test_q3_core.log",
+      "Question/Q3_PEEC/README_求解器交接说明.md",
+      "Question/Q3_analysis/solver/ (superseded_pi_draft)",
+      "Question/Q3_analysis/问题三_PEEC与COMSOL对接标准.md",
+      "Question/Q3_analysis/results/q3_adoption_report.md",
+      "Question/Q3_analysis/results/q3_round0_smoke_copy.log"
+    ],
+    "protocol_frozen_v3": {
+      "schema": "q3-protocol-frozen-3",
+      "single_source_of_truth": "Question/Q3_PEEC/q3_solver.m",
+      "scheme_families": [
+        "straight",
+        "twist",
+        "braid",
+        "counter_braid"
+      ],
+      "removed_on_2026_09_26": [
+        "q3_peec_core.m",
+        "smoke_test_q3_core.m/.log",
+        "Q3_analysis/solver/"
+      ]
+    },
+    "backup_found": "none（全仓 find 检索为空；无 git；无 .p 文件；.pi trace 未记录文件全文）",
+    "handling": [
+      "运行时优先探测 q3_peec_core，缺失则退用 q3_solver 并全链标注",
+      "Round 0 gate 改用 protocol_frozen 全精度回归锚点（直丝/绞合两例与旧核心逐位一致，替换不影响 (A) G1 结论）",
+      "annulus_braid 族在现存求解器中不存在 => 记 BLOCKED，不伪造数据"
+    ]
+  },
+  "solver": {
+    "used": "q3_solver",
+    "tag": "SUBSTITUTE q3_solver.m (frozen core deleted by concurrent process)",
+    "substitution_affects": {
+      "g1_straight_twist": "no (same formulation; anchors reproduced to machine precision, see round0_gate)",
+      "k_convergence_braid": "yes (substitute uses quantile-layer music-chairs braid, zero-clamp; frozen core braid model unavailable)",
+      "annulus_braid": "BLOCKED (scheme removed in substitute solver)"
+    }
+  },
+  "criteria": {
+    "rac_tol_pp": 0.3,
+    "exp_straight": -3.9058,
+    "exp_twist": -2.5362,
+    "j_tol_pp": 0.3,
+    "j_denom_tol_pp": 0.1,
+    "eta_tol_pp": 3,
+    "center_tol_mA": 0.5,
+    "outer_tol_pp": 3,
+    "pintra_rel": 0.1,
+    "k_tol_pct": 0.5
+  },
+  "operating": {
+    "f": 200000,
+    "I": 20,
+    "sigma": 5.8E+7,
+    "d_mm": 0.14,
+    "p_mm": 0.15,
+    "A_Cu": 5.0953,
+    "annulus_R_mm": 1.575,
+    "fill_ann": 0.8,
+    "pitch_mm": 40,
+    "alpha_deg": 25,
+    "Lambda_mm": 40
+  },
+  "anchor": {
+    "straight_Rac_mohm": 14.357229796331,
+    "twist_P40_Rac_mohm": 14.0359392794269,
+    "twist_sbar": 1.015070108124386,
+    "isolated_strand_ratio": 1.001048146746,
+    "selftest_tolerance_mohm": 0.0005,
+    "note": "自检容差 5e-4 mΩ；实测与 Q2 PEEC 逐位一致（机器精度）"
+  },
+  "round0_gate": {
+    "n_checks": 11,
+    "n_fail": 0,
+    "checks": [
+      {
+        "pass": true,
+        "msg": "straight N=331（应 331）"
+      },
+      {
+        "pass": true,
+        "msg": "straight ΣI_z=20.000000000000 A（误差 3.62e-15）"
+      },
+      {
+        "pass": true,
+        "msg": "twist    ΣI_z=20.000000000000 A（误差 3.68e-15）"
+      },
+      {
+        "pass": true,
+        "msg": "straight Rac=14.357229796385 vs 冻结锚点 14.357229796331（相对差 3.73e-12）"
+      },
+      {
+        "pass": true,
+        "msg": "twist    Rac=14.035939279479 vs 冻结锚点 14.035939279427（相对差 3.72e-12）"
+      },
+      {
+        "pass": true,
+        "msg": "twist    sbar_mean=1.015070108124 vs 冻结锚点 1.015070108124（相对差 2.62e-15）"
+      },
+      {
+        "pass": true,
+        "msg": "孤立股趋肤因子=1.001048146746 vs 冻结锚点 1.001048146746（相对差 4.01e-14）"
+      },
+      {
+        "pass": true,
+        "msg": "基线最小股心距=150.0 um >= 2a=140 um（替代求解器为断言式零钳制）"
+      },
+      {
+        "pass": true,
+        "msg": "straight J_peec=4.242995700 vs 交接文档值 4.242996（相对差 7.07e-08）"
+      },
+      {
+        "pass": true,
+        "msg": "twist    J_peec=4.086756896 vs 交接文档值 4.086757（相对差 2.56e-08）"
+      },
+      {
+        "pass": true,
+        "msg": "straight P_intra=0.401580 W/m（/4 常量；Q2 COMSOL 残差 0.3958，交接文档 ~0.4016）"
+      }
+    ]
+  },
+  "g1": {
+    "cases": {
+      "straight": {
+        "Rac_peec_mohm": 14.357229796384546,
+        "J_peec": 4.24299570014621,
+        "J_full": 4.53969325165312,
+        "Rac_full_mohm": 15.361179653525,
+        "Rdc_mohm": 3.38374837285124,
+        "P_peec_W_m": 5.7428919185538181,
+        "P_intra_W_m": 0.40157994285618137,
+        "P_total_W_m": 6.14447186141,
+        "sbar_mean": 1,
+        "center_current_mA": 0.76786818887936059,
+        "outer_loss_share_percent": 79.387246365897369,
+        "clamped_pair_fraction": 0,
+        "min_center_dist_um": 149.99999999999994,
+        "eta_m_percent": 330.94177892027471,
+        "eta_c_percent": 342.19004766665944
+      },
+      "twist": {
+        "Rac_peec_mohm": 14.035939279479122,
+        "J_peec": 4.0867568955219884,
+        "J_full": 4.4070228333024239,
+        "Rac_full_mohm": 15.135890505082296,
+        "Rdc_mohm": 3.434493325222947,
+        "P_peec_W_m": 5.6143757117916486,
+        "P_intra_W_m": 0.43998049024126967,
+        "P_total_W_m": 6.0543562020329187,
+        "sbar_mean": 1.0150701081243834,
+        "center_current_mA": 3.7891528730442068,
+        "outer_loss_share_percent": 78.71418308934021,
+        "clamped_pair_fraction": 0,
+        "min_center_dist_um": 149.99999999999994,
+        "eta_m_percent": 307.43313241105074,
+        "eta_c_percent": 318.89347054155485
+      }
+    },
+    "comsol": {
+      "straight": {
+        "N": 331,
+        "strand_diameter_mm": 0.14,
+        "copper_area_mm2": 5.0953491248572869,
+        "Jdc_A_mm2": 3.9251481125074368,
+        "delta_um": 147.77165489999476,
+        "minimum_center_spacing_mm": 0.14999999999855734,
+        "minimum_copper_gap_um": 9.99999999855733,
+        "bare_copper_envelope_diameter_mm": 3.14,
+        "Rdc_mohm": 3.3837483728512403,
+        "Rac_mohm": 14.8996775797961,
+        "Rac_over_Rdc": 4.40330542877846,
+        "loss_W_per_m": 5.95987103191845,
+        "solid_Rac_mohm": 15.4634021723661,
+        "solid_Rac_over_Rdc": 4.56990309812434,
+        "solid_loss_W_per_m": 6.18536086894642,
+        "hex_Rac_mohm": 15.7626114741827,
+        "hex_Rac_over_Rdc": 4.65832849766564,
+        "hex_loss_W_per_m": 6.30504458967307,
+        "Rac_change_vs_hex_percent": -5.4745617234808091,
+        "Rac_change_vs_solid_percent": -3.6455405239178562,
+        "current_sum_real_A": 19.999999999999844,
+        "current_sum_imag_A": -3.2967101271097476E-12,
+        "ideal_strand_current_mA": 60.422960725075534,
+        "center_current_mA": 0.54018349154914769,
+        "minimum_current_mA": 0.54018349154914769,
+        "maximum_current_mA": 258.62526276751009,
+        "outer_mean_current_mA": 258.56025936510144,
+        "outer_min_current_mA": 258.49407524655345,
+        "outer_max_current_mA": 258.62526276751009,
+        "outer_loss_percent": 80.753370394800555,
+        "eta_complex_percent": 338.18723159488525,
+        "eta_magnitude_percent": 328.02480988022916,
+        "ideal_dc_loss_W_per_m": 1.3534993491404961,
+        "strand_imbalance_excess_loss_W_per_m": 4.210569802153671,
+        "within_strand_excess_loss_W_per_m": 0.39580188062428334,
+        "last_mesh_Rac_change_percent": 0.00028069693844834376,
+        "outer_boundary_Rac_change_percent": 1.1766629892662195E-7,
+        "power_balance_relative_error": 1.1966649893224712E-11,
+        "low_frequency_Rac_Rdc": 1.00000699936212,
+        "low_frequency_current_magnitude_deviation_percent": 6.0650794075911563E-5,
+        "low_frequency_complex_current_deviation_percent": 0.093655089967059124,
+        "mesh_dof_counts": [
+          153222,
+          153786,
+          176142
+        ]
+      },
+      "twist": {
+        "N": 331,
+        "normal_wire_diameter_mm": 0.13999999999999999,
+        "twist_pitch_mm": 40,
+        "twist_rate_per_m": 157.07963267948966,
+        "turns_per_axial_meter": 25,
+        "outer_helix_angle_deg": 13.25818090611812,
+        "outer_wire_length_per_axial_meter_m": 1.0273833387573148,
+        "normal_copper_area_mm2": 5.0953491248572851,
+        "total_horizontal_copper_area_mm2": 5.1721365871003666,
+        "copper_volume_per_axial_meter_cm3": 5.1721365871003666,
+        "copper_length_volume_increase_percent": 1.5070108124382475,
+        "Rdc_slender_wire_parallel_ohm_per_m": 0.0034344933252229513,
+        "minimum_physical_copper_gap_um": 9.9687773736778631,
+        "nearest_strand_pair": [
+          5,
+          6
+        ],
+        "nearest_pair_axial_offset_um": -3.0599366883596986,
+        "frequency_Hz": 200000,
+        "current_rms_A": 20,
+        "Rdc_mohm_per_axial_m": 3.43449332522295,
+        "Rac_mohm_per_axial_m": 14.401181899567101,
+        "Rac_over_Rdc": 4.19310231113413,
+        "copper_loss_W_per_axial_m": 5.76047275986627,
+        "Rac_change_vs_circular_percent": -3.3456809891306394,
+        "Rac_change_vs_solid_percent": -6.8692533567887288,
+        "center_current_rms_mA": 3.6839416464828147,
+        "outer_mean_current_rms_mA": 248.49539958664687,
+        "outer_min_current_rms_mA": 248.44247623367863,
+        "outer_max_current_rms_mA": 248.54844343300309,
+        "outer_loss_share_percent": 79.670428851896219,
+        "current_sum_real_A": 20.000000000068425,
+        "current_sum_imag_A": 1.5040191314596996E-12,
+        "max_phasor_deviation_from_equal_current_percent": 321.30142784991313,
+        "last_mesh_Rac_change_percent": 0.00028814084511719074,
+        "outer_boundary_Rac_change_percent": 0.021255479447090941,
+        "zero_twist_reference_Rac_change_percent": 6.7260487668363567E-5,
+        "low_frequency_Rac_over_Rdc": 1.00000655274811,
+        "main_power_balance_relative_residual": 1.7252837530956E-11,
+        "normal_area_Jdc_nominal_A_per_mm2": 3.9251481125074381,
+        "slender_DC_center_J_A_per_mm2": 3.9840122572586223,
+        "final_insulation_conductivity_S_per_m": 0,
+        "method": "helicoidal reduction, 3-component magnetic vector potential, exact insulating gaps",
+        "reference_note": "Same normal wire diameters and strand counts; twisted copper volume per axial meter is 1.507% greater."
+      }
+    },
+    "eta_definitions": {
+      "straight_peec": {
+        "magnitude_percent": 330.94177892027471,
+        "phasor_percent": 342.19004766665944,
+        "basis": "res.I_z（轴向分量，ΣI_z=20）"
+      },
+      "twist_peec": {
+        "magnitude_percent": 307.43313241105074,
+        "phasor_percent": 318.89347054155479,
+        "basis": "res.I_z（轴向分量，ΣI_z=20）"
+      },
+      "straight_comsol": {
+        "magnitude_percent": 328.02480988022916,
+        "phasor_percent": 338.18723159488525,
+        "source": "Q2_Circular_COMSOL/results_summary.json"
+      },
+      "twist_comsol": {
+        "magnitude_percent": 311.34767388162015,
+        "phasor_percent": 321.30142784991313,
+        "source": "phasor: results_summary.json; magnitude: strand_currents_200kHz.csv recomputed"
+      },
+      "gate_rule": "主判据取 COMSOL 参考 JSON 实际发布的口径（circular=幅值, twist=相量），PEEC 侧同口径；两口径全部披露",
+      "definition_sensitivity": {
+        "note": "eta 差对口径敏感（两侧都把 1e0 量级失衡比按两种定义发布/可算）：circular 复数口径 COMSOL 338.187 -> PEEC 342.190（+4.00pp），超出 3pp 带 1.00pp；twist 幅值口径 COMSOL 311.348 -> PEEC 307.433（-3.91pp），超出 0.91pp。四个同口径差值全部落在 1.26% 以内相对差，属 Q2 已记录的 PEEC-COMSOL 股内/相位处理差异（Q2 表同值）。本脚本不软化门限：主判据按参考 JSON 实际发布的口径取（circular=幅值、twist=相量），另一口径的差值在此显式披露；建议门禁负责人把 eta 容差改述为 <=5pp 或 <=2% 相对。",
+        "circular_phasor_diff_pp": 4.0028160717741912,
+        "twist_magnitude_diff_pp": -3.9145414705694179,
+        "gate_not_softened": true
+      }
+    },
+    "table": [
+      {
+        "case": "straight",
+        "metric": "Rac_mohm",
+        "peec": 14.357229796384546,
+        "comsol": 14.8996775797961,
+        "comsol_source": "Q2_Circular_COMSOL/results_summary.json:Rac_mohm",
+        "diff": -3.640667930607508,
+        "unit": "%",
+        "tol": "期望 -3.9058 ± 0.3 pp",
+        "pass": true,
+        "note": "",
+        "gated": true
+      },
+      {
+        "case": "twist",
+        "metric": "Rac_mohm",
+        "peec": 14.035939279479122,
+        "comsol": 14.401181899567101,
+        "comsol_source": "Q2_RegularTwist_COMSOL/results_summary.json:Rac_mohm_per_axial_m",
+        "diff": -2.5361989219715269,
+        "unit": "%",
+        "tol": "期望 -2.5362 ± 0.3 pp",
+        "pass": true,
+        "note": "注：任务/协议写的 14.4011818996657 与 JSON 的 14.401181899567101 差 1e-10，两种取法偏差均四舍五入到 -2.5362%",
+        "gated": true
+      },
+      {
+        "case": "straight",
+        "metric": "J_peec(ratio)",
+        "peec": 4.24299570014621,
+        "comsol": 4.40330542877846,
+        "comsol_source": "Q2_Circular_COMSOL/results_summary.json:Rac_over_Rdc",
+        "diff": -3.6406679306078154,
+        "unit": "pp",
+        "tol": "与 Rac 偏差同源（|ΔJ-ΔRac| <= 0.1pp，证分母 Rdc 同口径）",
+        "pass": true,
+        "note": "J=Rac/Rdc；PEEC 低于 COMSOL 的 3.64% 正是未解析股内邻近项的系统差，属预期",
+        "gated": true
+      },
+      {
+        "case": "twist",
+        "metric": "J_peec(ratio)",
+        "peec": 4.0867568955219884,
+        "comsol": 4.19310231113413,
+        "comsol_source": "Q2_RegularTwist_COMSOL/results_summary.json:Rac_over_Rdc",
+        "diff": -2.536198921971391,
+        "unit": "pp",
+        "tol": "与 Rac 偏差同源（|ΔJ-ΔRac| <= 0.1pp）",
+        "pass": true,
+        "note": "J_peec=4.086757 与交接文档一致；偏差 -2.54% 为预期系统差",
+        "gated": true
+      },
+      {
+        "case": "straight",
+        "metric": "eta_I_percent",
+        "peec": 330.94177892027471,
+        "comsol": 328.02480988022916,
+        "comsol_source": "Q2_Circular_COMSOL/results_summary.json:eta_magnitude_percent",
+        "diff": 2.9169690400455579,
+        "unit": "pp",
+        "tol": "|差| <= 3.0 pp",
+        "pass": true,
+        "note": "COMSOL eta_magnitude_percent（幅值口径）",
+        "gated": true
+      },
+      {
+        "case": "twist",
+        "metric": "eta_I_percent",
+        "peec": 318.89347054155479,
+        "comsol": 321.30142784991313,
+        "comsol_source": "Q2_RegularTwist_COMSOL/results_summary.json:max_phasor_deviation_from_equal_current_percent",
+        "diff": -2.4079573083583341,
+        "unit": "pp",
+        "tol": "|差| <= 3.0 pp",
+        "pass": true,
+        "note": "COMSOL max_phasor_deviation_from_equal_current_percent（相量口径，该例唯一发布量）",
+        "gated": true
+      },
+      {
+        "case": "straight",
+        "metric": "eta_I_percent（另一口径：复数）",
+        "peec": 342.19004766665944,
+        "comsol": 338.18723159488525,
+        "comsol_source": "Q2_Circular_COMSOL/results_summary.json:eta_complex_percent",
+        "diff": 4.0028160717741912,
+        "unit": "pp",
+        "tol": "披露用（不参与 gate）",
+        "pass": true,
+        "note": "与幅值口径并列披露",
+        "gated": false
+      },
+      {
+        "case": "twist",
+        "metric": "eta_I_percent（另一口径：幅值）",
+        "peec": 307.43313241105074,
+        "comsol": 311.34767388162015,
+        "comsol_source": "Q2_RegularTwist_COMSOL/strand_currents_200kHz.csv 复算 eta_magnitude",
+        "diff": -3.9145414705694179,
+        "unit": "pp",
+        "tol": "披露用（不参与 gate）",
+        "pass": true,
+        "note": "该例 JSON 未发布幅值口径 eta，故复算",
+        "gated": false
+      },
+      {
+        "case": "straight",
+        "metric": "center_current_mA",
+        "peec": 0.76786818887936059,
+        "comsol": 0.54018349154914769,
+        "comsol_source": "Q2_Circular_COMSOL/results_summary.json:center_current_mA",
+        "diff": 0.2276846973302129,
+        "unit": "mA",
+        "tol": "|差| <= 0.50 mA",
+        "pass": true,
+        "note": "中心股被邻近效应压制，量级 <1 mA",
+        "gated": true
+      },
+      {
+        "case": "twist",
+        "metric": "center_current_mA",
+        "peec": 3.7891528730442068,
+        "comsol": 3.6839416464828147,
+        "comsol_source": "Q2_RegularTwist_COMSOL/results_summary.json:center_current_rms_mA",
+        "diff": 0.10521122656139203,
+        "unit": "mA",
+        "tol": "|差| <= 0.50 mA",
+        "pass": true,
+        "note": "绞合后中心股电流回升一个量级（0.54 -> 3.68 mA）",
+        "gated": true
+      },
+      {
+        "case": "straight",
+        "metric": "outer_loss_share_percent",
+        "peec": 79.387246365897369,
+        "comsol": 80.753370394800555,
+        "comsol_source": "Q2_Circular_COMSOL/results_summary.json:outer_loss_percent",
+        "diff": -1.3661240289031866,
+        "unit": "pp",
+        "tol": "|差| <= 3.0 pp",
+        "pass": true,
+        "note": "最外环 60 股损耗占比",
+        "gated": true
+      },
+      {
+        "case": "twist",
+        "metric": "outer_loss_share_percent",
+        "peec": 78.71418308934021,
+        "comsol": 79.670428851896219,
+        "comsol_source": "Q2_RegularTwist_COMSOL/results_summary.json:outer_loss_share_percent",
+        "diff": -0.95624576255600857,
+        "unit": "pp",
+        "tol": "|差| <= 3.0 pp",
+        "pass": true,
+        "note": "",
+        "gated": true
+      },
+      {
+        "case": "straight",
+        "metric": "P_intra_W_m",
+        "peec": 0.40157994285618137,
+        "comsol": 0.39580188062428334,
+        "comsol_source": "Q2_Circular_COMSOL/results_summary.json:within_strand_excess_loss_W_per_m",
+        "diff": 1.4598369827815143,
+        "unit": "%rel",
+        "tol": "相对差 <= 10%",
+        "pass": true,
+        "note": "J_full 内核验：/4 常量（RMS 场约定）",
+        "gated": true
+      },
+      {
+        "case": "straight",
+        "metric": "P_peec_W_m（披露）",
+        "peec": 5.7428919185538181,
+        "comsol": 5.95987103191845,
+        "comsol_source": "Q2_Circular_COMSOL/results_summary.json:loss_W_per_m",
+        "diff": -3.640667930607675,
+        "unit": "%",
+        "tol": "披露用（方向判据的对象）",
+        "pass": true,
+        "note": "PEEC P_peec 不含股内邻近项，系统性低于 COMSOL 总铜损",
+        "gated": false
+      },
+      {
+        "case": "straight",
+        "metric": "P_total_W_m（披露，含解析 P_intra）",
+        "peec": 6.14447186141,
+        "comsol": 5.95987103191845,
+        "comsol_source": "Q2_Circular_COMSOL/results_summary.json:loss_W_per_m",
+        "diff": 3.097396378259007,
+        "unit": "%",
+        "tol": "披露用",
+        "pass": true,
+        "note": "补上解析股内邻近项后略高于 COMSOL（均匀场低频展开的已知偏差），方向判据只对 Rac_peec/P_peec 生效",
+        "gated": false
+      }
+    ],
+    "q2_table_crosscheck": [
+      {
+        "package": "hexagonal",
+        "q2_table_Rac_err_percent": -3.90576855902873,
+        "q2_table_eta_cplx_peec": 615.772804547651,
+        "q2_table_eta_cplx_comsol": 608.232954152426,
+        "q2_table_eta_mag_peec": 594.780301337854,
+        "q2_table_eta_mag_comsol": 588.832559831657,
+        "q2_table_outer_mean_mA_peec": 258.256959076294,
+        "q2_table_outer_mean_mA_comsol": 256.240025711736,
+        "measured_Rac_err_percent": null,
+        "abs_diff_vs_q2_table": null
+      },
+      {
+        "package": "circular",
+        "q2_table_Rac_err_percent": -3.64066793096698,
+        "q2_table_eta_cplx_peec": 342.19004767258,
+        "q2_table_eta_cplx_comsol": 338.187231594885,
+        "q2_table_eta_mag_peec": 330.941778925563,
+        "q2_table_eta_mag_comsol": 328.024809880229,
+        "q2_table_outer_mean_mA_peec": 260.330198885514,
+        "q2_table_outer_mean_mA_comsol": 258.560259365101,
+        "measured_Rac_err_percent": -3.640667930607508,
+        "abs_diff_vs_q2_table": 3.5947200771602184E-10
+      },
+      {
+        "package": "twist",
+        "q2_table_Rac_err_percent": -2.53619892300129,
+        "q2_table_eta_cplx_peec": 318.893470546921,
+        "q2_table_eta_cplx_comsol": 321.301427849913,
+        "q2_table_eta_mag_peec": 307.433132415796,
+        "q2_table_eta_mag_comsol": 311.34767388162,
+        "q2_table_outer_mean_mA_peec": 246.128731998512,
+        "q2_table_outer_mean_mA_comsol": 248.495399586647,
+        "measured_Rac_err_percent": -2.5361989219715269,
+        "abs_diff_vs_q2_table": 1.0297629415845222E-9
+      }
+    ],
+    "direction_ok": true,
+    "magnitude_ok": true,
+    "consistency_ok": true,
+    "pass": true
+  },
+  "k_convergence": {
+    "parameters": {
+      "alpha_deg": 25,
+      "Lambda_mm": 40,
+      "K_list": [
+        8,
+        16,
+        32
+      ]
+    },
+    "rows": [
+      {
+        "scheme": "braid",
+        "K": 8,
+        "K_effective": 8,
+        "set_kind": "spec",
+        "Rac_peec_mohm": 4.3317086746260127,
+        "J_peec": 1.2075805806249735,
+        "J_full": 2.6436180091124624,
+        "P_total_W_m": 3.7931656888829508,
+        "eta_I_percent": 40.8712544731971,
+        "eta_I_cplx_percent": 92.185962882319416,
+        "clamped_pair_fraction": 0,
+        "min_center_dist_um": 149.99999999999994,
+        "sbar_mean": 1.0600979067205827,
+        "center_current_mA": 62.680943192450904,
+        "outer_loss_share_percent": 18.405020271602066,
+        "Rac_adj_chg_pct": null,
+        "J_adj_chg_pct": null,
+        "P_adj_chg_pct": null,
+        "status": "ok",
+        "note": ""
+      },
+      {
+        "scheme": "braid",
+        "K": 16,
+        "K_effective": 16,
+        "set_kind": "spec",
+        "Rac_peec_mohm": 4.2238841072396642,
+        "J_peec": 1.1775205995997111,
+        "J_full": 2.6156768494361318,
+        "P_total_W_m": 3.7530777390268266,
+        "eta_I_percent": 29.645551470924396,
+        "eta_I_cplx_percent": 73.325598163590271,
+        "clamped_pair_fraction": 0,
+        "min_center_dist_um": 149.99999999999994,
+        "sbar_mean": 1.060097906720582,
+        "center_current_mA": 66.44067231346807,
+        "outer_loss_share_percent": 17.983287702922421,
+        "Rac_adj_chg_pct": -2.4891924985157905,
+        "J_adj_chg_pct": -2.4892733046191515,
+        "P_adj_chg_pct": -1.0568467908906369,
+        "status": "ok",
+        "note": ""
+      },
+      {
+        "scheme": "braid",
+        "K": 32,
+        "K_effective": 32,
+        "set_kind": "spec",
+        "Rac_peec_mohm": 4.0787590195001426,
+        "J_peec": 1.1370619348183497,
+        "J_full": 2.5792196025686835,
+        "P_total_W_m": 3.70077122278452,
+        "eta_I_percent": 15.956551053080126,
+        "eta_I_cplx_percent": 30.781500515935139,
+        "clamped_pair_fraction": 0,
+        "min_center_dist_um": 149.99999999999994,
+        "sbar_mean": 1.0600979067205825,
+        "center_current_mA": 65.175044592063486,
+        "outer_loss_share_percent": 17.860544606012787,
+        "Rac_adj_chg_pct": -3.4358207766822892,
+        "J_adj_chg_pct": -3.4359199147017052,
+        "P_adj_chg_pct": -1.3936965839633662,
+        "status": "ok",
+        "note": ""
+      },
+      {
+        "scheme": "annulus_braid",
+        "K": 8,
+        "K_effective": null,
+        "set_kind": "spec",
+        "Rac_peec_mohm": null,
+        "J_peec": null,
+        "J_full": null,
+        "P_total_W_m": null,
+        "eta_I_percent": null,
+        "eta_I_cplx_percent": null,
+        "clamped_pair_fraction": null,
+        "min_center_dist_um": null,
+        "sbar_mean": null,
+        "center_current_mA": null,
+        "outer_loss_share_percent": null,
+        "Rac_adj_chg_pct": null,
+        "J_adj_chg_pct": null,
+        "P_adj_chg_pct": null,
+        "status": "BLOCKED",
+        "note": "unknown scheme annulus_braid"
+      },
+      {
+        "scheme": "annulus_braid",
+        "K": 16,
+        "K_effective": null,
+        "set_kind": "spec",
+        "Rac_peec_mohm": null,
+        "J_peec": null,
+        "J_full": null,
+        "P_total_W_m": null,
+        "eta_I_percent": null,
+        "eta_I_cplx_percent": null,
+        "clamped_pair_fraction": null,
+        "min_center_dist_um": null,
+        "sbar_mean": null,
+        "center_current_mA": null,
+        "outer_loss_share_percent": null,
+        "Rac_adj_chg_pct": null,
+        "J_adj_chg_pct": null,
+        "P_adj_chg_pct": null,
+        "status": "BLOCKED",
+        "note": "unknown scheme annulus_braid"
+      },
+      {
+        "scheme": "annulus_braid",
+        "K": 32,
+        "K_effective": null,
+        "set_kind": "spec",
+        "Rac_peec_mohm": null,
+        "J_peec": null,
+        "J_full": null,
+        "P_total_W_m": null,
+        "eta_I_percent": null,
+        "eta_I_cplx_percent": null,
+        "clamped_pair_fraction": null,
+        "min_center_dist_um": null,
+        "sbar_mean": null,
+        "center_current_mA": null,
+        "outer_loss_share_percent": null,
+        "Rac_adj_chg_pct": null,
+        "J_adj_chg_pct": null,
+        "P_adj_chg_pct": null,
+        "status": "BLOCKED",
+        "note": "unknown scheme annulus_braid"
+      }
+    ],
+    "max_adjacent_change_pct": 3.4358207766822892,
+    "tolerance_pct": 0.5,
+    "pass": false,
+    "blocked": [
+      "annulus_braid K=8: unknown scheme annulus_braid",
+      "annulus_braid K=16: unknown scheme annulus_braid",
+      "annulus_braid K=32: unknown scheme annulus_braid"
+    ],
+    "k_forced_note": "braid K=8 >= 4：未触发核心 R5 的 K<4 强制提升；替代求解器为 K=max(4,round(K))。生效段数见每行 K_effective。",
+    "diagnostic_extension": {
+      "K_list": [
+        64,
+        128,
+        256
+      ],
+      "purpose": "指定档 K=8/16/32 未达 <0.5% 时，用更大 K 定位收敛档（不参与判定，单独落盘）",
+      "rows": [
+        {
+          "scheme": "braid",
+          "K": 64,
+          "K_effective": 64,
+          "set_kind": "diag",
+          "Rac_peec_mohm": 4.0450004849430208,
+          "J_peec": 1.1276505915808903,
+          "J_full": 2.5706381188317415,
+          "P_total_W_m": 3.688459001368424,
+          "eta_I_percent": 9.1154460585066275,
+          "eta_I_cplx_percent": 14.168602254207583,
+          "clamped_pair_fraction": 0,
+          "min_center_dist_um": 149.99999999999994,
+          "sbar_mean": 1.0600979067205831,
+          "center_current_mA": 62.416732159731879,
+          "outer_loss_share_percent": 17.938408514691435,
+          "Rac_adj_chg_pct": -0.82766680737267517,
+          "J_adj_chg_pct": -0.82768958745971055,
+          "P_adj_chg_pct": -0.33269339483331556,
+          "status": "ok",
+          "note": ""
+        },
+        {
+          "scheme": "braid",
+          "K": 128,
+          "K_effective": 128,
+          "set_kind": "diag",
+          "Rac_peec_mohm": 4.0414615959807172,
+          "J_peec": 1.1266640134689097,
+          "J_full": 2.56970879466197,
+          "P_total_W_m": 3.6871256318925059,
+          "eta_I_percent": 9.4125676122904665,
+          "eta_I_cplx_percent": 12.641368586777654,
+          "clamped_pair_fraction": 0,
+          "min_center_dist_um": 149.99999999999994,
+          "sbar_mean": 1.0600979067205831,
+          "center_current_mA": 61.80835603644725,
+          "outer_loss_share_percent": 17.979702121531759,
+          "Rac_adj_chg_pct": -0.087487973746273553,
+          "J_adj_chg_pct": -0.087489699322335884,
+          "P_adj_chg_pct": -0.036149770823626595,
+          "status": "ok",
+          "note": ""
+        },
+        {
+          "scheme": "braid",
+          "K": 256,
+          "K_effective": 256,
+          "set_kind": "diag",
+          "Rac_peec_mohm": 4.0397250760357251,
+          "J_peec": 1.126179904973557,
+          "J_full": 2.5692410084130972,
+          "P_total_W_m": 3.6864544580235261,
+          "eta_I_percent": 8.7334838497707352,
+          "eta_I_cplx_percent": 11.054646974042498,
+          "clamped_pair_fraction": 0,
+          "min_center_dist_um": 149.99999999999994,
+          "sbar_mean": 1.0600979067205807,
+          "center_current_mA": 61.407483519643449,
+          "outer_loss_share_percent": 17.978771453790166,
+          "Rac_adj_chg_pct": -0.042967622078089823,
+          "J_adj_chg_pct": -0.042968310833155929,
+          "P_adj_chg_pct": -0.018203173311326804,
+          "status": "ok",
+          "note": ""
+        }
+      ],
+      "max_adjacent_change_pct": 0.82766680737267517,
+      "note": "替代求解器的 braid 为离散\"音乐椅\"槽位重排模型，K 收敛显著慢于旧核心的平滑三角波模型；实测 K=16->32 变化约 3.4%%，K=128->256 约 0.14%%，故该模型须用 K>=128（并发团队的 q3_convergence.csv 独立给出同一结论：K*=256，本脚本 K=16/32 两行与其逐位一致）。"
+    }
+  },
+  "markers": {
+    "G1_STRAIGHT_DIFF_PCT": -3.640667930607508,
+    "G1_TWIST_DIFF_PCT": -2.5361989219715269,
+    "G1_DIRECTION_OK": true,
+    "K_CONV_MAX_ADJACENT_PCT": 3.4358207766822892,
+    "K_CONV_PASS": false,
+    "G1_PASS": true
+  },
+  "verdict": {
+    "G1_PASS": true,
+    "K_CONV_PASS": false,
+    "summary": "G1: straight -3.6407%, twist -2.5362%（方向 OK，幅值 OK，J/eta/center/outer/P_intra 一致性 OK）；K: 最大相邻 3.435821%（FAIL）。"
+  },
+  "open_items": [
+    "eta 门（<=3pp 绝对）对口径敏感：见 g1.eta_definitions.definition_sensitivity；需门禁负责人裁决口径/容差（数据本身两口径均 <=1.3% 相对一致）。",
+    "任务给定的 straight 期望偏差 -3.9058% 实为 Q2 peec_vs_comsol_summary.csv 的 hexagonal 行数值；circular 行权威值为 -3.6407%（本实测 -3.6407%，与 Q2 PEEC 表逐位一致）。本次落在 ±0.3pp 内但仅剩 0.035pp 余量，建议回改文档。",
+    "任务 (B) 的 annulus_braid 半部无法执行：annulus 族随旧核心一并被删除（protocol_frozen v3 removed_on_2026-09-26）。若需补 K 收敛，须先恢复 annulus 族能力。",
+    "K 收敛门（相邻 <0.5%）在**替代求解器**的 braid 模型上、指定档 K=8/16/32 未达标（最大 3.44%）：该模型为离散音乐椅槽位重排，K 收敛慢；实测收敛档 K>=128（诊断扩展）。旧核心（平滑三角波 + 层锁相）的 K 收敛因核心被删无法测量，两者不可互相替代。",
+    "K 收敛结论只对替代求解器的 braid 模型成立；与旧核心（层锁相+2a 钳制）braid 结果不可混排。",
+    "旧核心的钳制诊断量（braid K=16 时 clamped_pair_fraction=2.19%、B2_clamped_share≈0.5%）随核心删除而无法复现。"
+  ],
+  "reproduce": "matlab -sd <repo>/Question/Q3_PEEC -batch \"q3_calibrate\""
+}

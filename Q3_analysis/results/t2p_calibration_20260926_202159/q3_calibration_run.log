@@ -1,0 +1,73 @@
+
+======================================================================
+ T2p 标定 q3_calibrate.m  |  起始 2026-09-26 20:21:53
+======================================================================
+[1] 读取 Q2 COMSOL 参考与冻结锚点
+    protocol_frozen schema = q3-protocol-frozen-3（单源真源字段 = Question/Q3_PEEC/q3_solver.m）
+    冻结回归锚点: straight 14.357229796331 | twist 14.035939279427 | sbar 1.015070108124 | Zint 1.001048146746
+    COMSOL 逐股 CSV 复算: circular eta_cplx=338.1872315949 eta_mag=328.0248098802（JSON: 338.1872315949 / 328.0248098802）
+    COMSOL 逐股 CSV 复算: twist    eta_cplx=321.3014278499 eta_mag=311.3476738816（JSON 仅发布 321.3014278499）
+    布局 N=331, 包络半径=1.5000 mm, 环数=10
+
+[2] 求解器探测与 Round 0 gate（替代已删除的 smoke_test_q3_core）
+    使用求解器 = SUBSTITUTE q3_solver.m (frozen core deleted by concurrent process)
+    [PASS] straight N=331（应 331）
+    [PASS] straight ΣI_z=20.000000000000 A（误差 3.62e-15）
+    [PASS] twist    ΣI_z=20.000000000000 A（误差 3.68e-15）
+    [PASS] straight Rac=14.357229796385 vs 冻结锚点 14.357229796331（相对差 3.73e-12）
+    [PASS] twist    Rac=14.035939279479 vs 冻结锚点 14.035939279427（相对差 3.72e-12）
+    [PASS] twist    sbar_mean=1.015070108124 vs 冻结锚点 1.015070108124（相对差 2.62e-15）
+    [PASS] 孤立股趋肤因子=1.001048146746 vs 冻结锚点 1.001048146746（相对差 4.01e-14）
+    [PASS] 基线最小股心距=150.0 um >= 2a=140 um（替代求解器为断言式零钳制）
+    [PASS] straight J_peec=4.242995700 vs 交接文档值 4.242996（相对差 7.07e-08）
+    [PASS] twist    J_peec=4.086756896 vs 交接文档值 4.086757（相对差 2.56e-08）
+    [PASS] straight P_intra=0.401580 W/m（/4 常量；Q2 COMSOL 残差 0.3958，交接文档 ~0.4016）
+    Round 0 gate 通过（11/11）
+[3] (A) G1 方向性标定（PEEC vs Q2 COMSOL）
+    PEEC straight: eta_mag=330.941779 eta_cplx=342.190048
+    PEEC twist   : eta_mag=307.433132 eta_cplx=318.893471
+    straight   Rac_mohm                           PEEC=     14.357230  COMSOL=     14.899678  diff=  -3.6407 %    [OK]
+    twist      Rac_mohm                           PEEC=     14.035939  COMSOL=     14.401182  diff=  -2.5362 %    [OK]
+    straight   J_peec(ratio)                      PEEC=      4.242996  COMSOL=      4.403305  diff=  -3.6407 pp   [OK]
+    twist      J_peec(ratio)                      PEEC=      4.086757  COMSOL=      4.193102  diff=  -2.5362 pp   [OK]
+    straight   eta_I_percent                      PEEC=    330.941779  COMSOL=    328.024810  diff=  +2.9170 pp   [OK]
+    twist      eta_I_percent                      PEEC=    318.893471  COMSOL=    321.301428  diff=  -2.4080 pp   [OK]
+    straight   eta_I_percent（另一口径：复数）             PEEC=    342.190048  COMSOL=    338.187232  diff=  +4.0028 pp   [OK]
+    twist      eta_I_percent（另一口径：幅值）             PEEC=    307.433132  COMSOL=    311.347674  diff=  -3.9145 pp   [OK]
+    straight   center_current_mA                  PEEC=      0.767868  COMSOL=      0.540183  diff=  +0.2277 mA   [OK]
+    twist      center_current_mA                  PEEC=      3.789153  COMSOL=      3.683942  diff=  +0.1052 mA   [OK]
+    straight   outer_loss_share_percent           PEEC=     79.387246  COMSOL=     80.753370  diff=  -1.3661 pp   [OK]
+    twist      outer_loss_share_percent           PEEC=     78.714183  COMSOL=     79.670429  diff=  -0.9562 pp   [OK]
+    straight   P_intra_W_m                        PEEC=      0.401580  COMSOL=      0.395802  diff=  +1.4598 %rel [OK]
+    straight   P_peec_W_m（披露）                     PEEC=      5.742892  COMSOL=      5.959871  diff=  -3.6407 %    [OK]
+    straight   P_total_W_m（披露，含解析 P_intra）        PEEC=      6.144472  COMSOL=      5.959871  diff=  +3.0974 %    [OK]
+    Q2表 hexagonal   Rac_err=-3.9057685590%  本实测=NaN%  |差|=NaN (不适用/超差)
+    Q2表 circular    Rac_err=-3.6406679310%  本实测=-3.6406679306%  |差|=3.595e-10 (复现)
+    Q2表 twist       Rac_err=-2.5361989230%  本实测=-2.5361989220%  |差|=1.030e-09 (复现)
+    => 任务给定的 straight 期望 -3.9058% 实为上表 hexagonal 行的数值；circular 行权威值为
+       -3.6406679310%。本实测 -3.6406679306%，与权威值逐位一致；相对任务值只差 0.2651 pp（容差 0.3 pp 内，余量 0.0349 pp）。
+
+[4] (B) K 分段收敛：braid / annulus_braid，alpha=25 deg, Lambda=40 mm, 指定 K=[8 16 32]（另加诊断档 K=[64 128 256]）
+    braid         K=  8 (生效   8, spec): Rac=  4.331709 mO/m  J_peec=1.207581  J_full=2.643618  P=3.7932 W/m  eta_I=40.87%  钳制=0.0000%  最小股心距=150.0 um  sbar=1.06010  ΔRac_prev=n/a
+    braid         K= 16 (生效  16, spec): Rac=  4.223884 mO/m  J_peec=1.177521  J_full=2.615677  P=3.7531 W/m  eta_I=29.65%  钳制=0.0000%  最小股心距=150.0 um  sbar=1.06010  ΔRac_prev=-2.489192%
+    braid         K= 32 (生效  32, spec): Rac=  4.078759 mO/m  J_peec=1.137062  J_full=2.579220  P=3.7008 W/m  eta_I=15.96%  钳制=0.0000%  最小股心距=150.0 um  sbar=1.06010  ΔRac_prev=-3.435821%
+    braid         K= 64 (生效  64, diag): Rac=  4.045000 mO/m  J_peec=1.127651  J_full=2.570638  P=3.6885 W/m  eta_I=9.12%  钳制=0.0000%  最小股心距=150.0 um  sbar=1.06010  ΔRac_prev=-0.827667%
+    braid         K=128 (生效 128, diag): Rac=  4.041462 mO/m  J_peec=1.126664  J_full=2.569709  P=3.6871 W/m  eta_I=9.41%  钳制=0.0000%  最小股心距=150.0 um  sbar=1.06010  ΔRac_prev=-0.087488%
+    braid         K=256 (生效 256, diag): Rac=  4.039725 mO/m  J_peec=1.126180  J_full=2.569241  P=3.6865 W/m  eta_I=8.73%  钳制=0.0000%  最小股心距=150.0 um  sbar=1.06010  ΔRac_prev=-0.042968%
+    annulus_braid K=  8 : BLOCKED —— unknown scheme annulus_braid
+    annulus_braid K= 16 : BLOCKED —— unknown scheme annulus_braid
+    annulus_braid K= 32 : BLOCKED —— unknown scheme annulus_braid
+    annulus_braid K= 64 : BLOCKED —— unknown scheme annulus_braid
+    annulus_braid K=128 : BLOCKED —— unknown scheme annulus_braid
+    annulus_braid K=256 : BLOCKED —— unknown scheme annulus_braid
+    K 收敛（指定档 [8 16 32]）：最大相邻变化 = 3.435821 %（门 0.50 %，共 2 个相邻档）-> FAIL
+    诊断扩展 K=[64 128 256]：最大相邻变化 0.827667 %；首次稳定在 <0.50% 的档位 -> K=256（Rac=4.039725 mO/m, J_peec=1.126180）
+    注：替代求解器 braid 分支 K=max(4,round(K))，K=8/16/32/64/128/256 均未被强制提升；最小股心距由构造+硬断言保证 >= 2a，
+        故 clamped_pair_fraction 记 0（不作钳制兜底；旧核心 braid K=16 时为 2.19%，两者模型不同，不可混排）。
+
+[5] 判定
+    G1 方向（两个 Rac 偏差均为负）          : OK（straight -3.6407%, twist -2.5362%）
+    G1 幅值（|diff-期望| <= 0.3pp）         : OK（straight 0.2651 pp off, twist 0.0000 pp off）
+    G1 一致性（J/eta/center/outer/P_intra）  : OK
+    K 收敛（最大相邻 3.435821% < 0.50%）       : NG
+    => G1_PASS=1, K_CONV_PASS=0
