@@ -1,0 +1,50 @@
+{
+  "total_strands": 9,
+  "grouping_inner_to_outer": [
+    3,
+    3
+  ],
+  "recursive_levels": 2,
+  "signed_relative_pitches_mm": [
+    4.0,
+    12.0
+  ],
+  "diameter_um": 149.23944472309086,
+  "gap_design_um": 20.0,
+  "copper_area_normal_mm2": 0.15743440233236153,
+  "full_identity_repeat_mm": 12.0,
+  "outer_diameter_bound_mm": 0.7731580853565571,
+  "growth_min": 1.0265992636980779,
+  "growth_mean": 1.0265992636980785,
+  "growth_max": 1.026599263698079,
+  "total_copper_volume_per_axial_m_mm3": 161.6220415151494,
+  "Rdc_length_parallel_ohm_per_m": 0.11242769714190322,
+  "max_tangent_angle_deg": 17.709695977301507,
+  "min_bend_radius_mm": 2.1940070637567386,
+  "min_sampled_axis_spacing_um": 168.34141146650663,
+  "conservative_sampled_projected_clearance_um": 11.677674947588004,
+  "radial_excursion_min_mm": 0.1953370052341218,
+  "radial_excursion_max_mm": 0.19542087793675864,
+  "all_strands_reach_center": false,
+  "note": "Centerlines and geometric diagnostics only. Sampled clearance is not a rigorous continuous collision certificate. No electromagnetic optimum is claimed.",
+  "screw_mapping": {
+    "cell_length_m": 0.0013333333333333333,
+    "rotation_deg": 39.99999999999999,
+    "strand_destination_to_source": [
+      1,
+      2,
+      0,
+      4,
+      5,
+      3,
+      7,
+      8,
+      6
+    ],
+    "permutation": true,
+    "max_position_error_m": 3.7145812743438956e-12,
+    "max_tangent_error": 6.720025334162592e-07,
+    "geometry_mapping_pass": true,
+    "electrical_mapping_status": "Not yet implemented or validated; geometry check alone is insufficient"
+  }
+}

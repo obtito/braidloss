@@ -1,0 +1,168 @@
+{
+  "status": "screening_accepted",
+  "source_sha256": "e403f052ad8175860e337fd921be4fcc8cbf1ca84201df723d98a85412af40ea",
+  "tolerance_pct": 5,
+  "fit_coefficients": null,
+  "cases": [
+    {
+      "case": "baseline_64_av_m3",
+      "FEM_folder": "baseline_64_av_m3",
+      "role": "development",
+      "prediction": {
+        "Rac": 0.014278079142447503,
+        "Rdc": 0.0028816125895071627,
+        "K": 4.954891991532234,
+        "imbalance_complex": 4.043822741174515,
+        "passivity_min_eigenvalue": 0.19311506959437472,
+        "slices": 16,
+        "modes": 3
+      },
+      "COMSol": {
+        "Rac": 0.014314942597278368,
+        "Rdc": 0.0028816840747698195,
+        "K": 4.967561407099009
+      },
+      "error_pct": {
+        "Rac": -0.2575173080880844,
+        "Rdc": -0.0024806766044438433,
+        "K": -0.25504295827464274
+      },
+      "power_error_pct": 0.005901003186570275,
+      "status": "pass"
+    },
+    {
+      "case": "validate_two_64_16_96",
+      "FEM_folder": "validate_two_64_16_96_curvature_m3",
+      "role": "development",
+      "prediction": {
+        "Rac": 0.01319939290191576,
+        "Rdc": 0.0029073860802916055,
+        "K": 4.539951880278619,
+        "imbalance_complex": 1.6410882831797342,
+        "passivity_min_eigenvalue": 0.20116240668297092,
+        "slices": 16,
+        "modes": 3
+      },
+      "COMSol": {
+        "Rac": 0.013351746321607464,
+        "Rdc": 0.0029074649048341696,
+        "K": 4.592229574089733
+      },
+      "error_pct": {
+        "Rac": -1.1410748528463799,
+        "Rdc": -0.0027111089950904166,
+        "K": -1.1383946069698836
+      },
+      "power_error_pct": 0.0053435717525363025,
+      "status": "pass"
+    },
+    {
+      "case": "validate_three_64_32_32_96",
+      "FEM_folder": "validate_three_64_32_32_96",
+      "role": "independent",
+      "prediction": {
+        "Rac": 0.013753582453048193,
+        "Rdc": 0.0029525569597069006,
+        "K": 4.658193776018975,
+        "imbalance_complex": 0.03920617194713707,
+        "passivity_min_eigenvalue": 0.20214096267130352,
+        "slices": 16,
+        "modes": 3
+      },
+      "COMSol": {
+        "Rac": 0.01426200179865566,
+        "Rdc": 0.0029541503139304997,
+        "K": 4.8277847377644285
+      },
+      "error_pct": {
+        "Rac": -3.5648526257750945,
+        "Rdc": -0.053936125595421824,
+        "K": -3.5128111744266555
+      },
+      "power_error_pct": 0.009884484261646342,
+      "status": "pass"
+    },
+    {
+      "case": "holdout_three_64_m16_16_96",
+      "FEM_folder": "holdout_three_64_m16_16_96",
+      "role": "independent",
+      "prediction": {
+        "Rac": 0.015432007896132433,
+        "Rdc": 0.0030161855356316274,
+        "K": 5.116398747300794,
+        "imbalance_complex": 2.0001207787254356,
+        "passivity_min_eigenvalue": 0.2043989857861309,
+        "slices": 16,
+        "modes": 3
+      },
+      "COMSol": {
+        "Rac": 0.01615445415938607,
+        "Rdc": 0.0030194651194590163,
+        "K": 5.350104578217611
+      },
+      "error_pct": {
+        "Rac": -4.472118068030662,
+        "Rdc": -0.10861472802761174,
+        "K": -4.368247900579836
+      },
+      "power_error_pct": 0.0017462570852444514,
+      "status": "pass"
+    },
+    {
+      "case": "holdout_two_64_m32_96",
+      "FEM_folder": "holdout_two_64_m32_96",
+      "role": "independent",
+      "prediction": {
+        "Rac": 0.01311286470406063,
+        "Rdc": 0.0028870072767696806,
+        "K": 4.5420268973941855,
+        "imbalance_complex": 1.6414045030102524,
+        "passivity_min_eigenvalue": 0.19989494046822884,
+        "slices": 16,
+        "modes": 3
+      },
+      "COMSol": {
+        "Rac": 0.013557598995830429,
+        "Rdc": 0.0028878010788307928,
+        "K": 4.694782855791301
+      },
+      "error_pct": {
+        "Rac": -3.2803322469308616,
+        "Rdc": -0.027488114293305888,
+        "K": -3.253738524001848
+      },
+      "power_error_pct": 0.0030738355345949486,
+      "status": "pass"
+    }
+  ],
+  "ranking": [
+    {
+      "cases": [
+        "validate_three_64_32_32_96",
+        "holdout_three_64_m16_16_96"
+      ],
+      "relative_K_difference": -0.0976279683540678,
+      "considered_separable": true,
+      "rank_agrees": true
+    },
+    {
+      "cases": [
+        "validate_three_64_32_32_96",
+        "holdout_two_64_m32_96"
+      ],
+      "relative_K_difference": 0.027549256894729715,
+      "considered_separable": true,
+      "rank_agrees": true
+    },
+    {
+      "cases": [
+        "holdout_three_64_m16_16_96",
+        "holdout_two_64_m32_96"
+      ],
+      "relative_K_difference": 0.12248764726850075,
+      "considered_separable": true,
+      "rank_agrees": true
+    }
+  ],
+  "limitations": "Curved-wire inductance remains an approximation. Screening acceptance is not final 3D verification of the optimum."
+}

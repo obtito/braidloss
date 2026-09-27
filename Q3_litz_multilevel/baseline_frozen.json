@@ -1,0 +1,410 @@
+{
+  "frozen_at_utc": "2026-09-26T08:58:39.476426+00:00",
+  "case": "baseline_64_av_m3",
+  "meaning": "Formal baseline frozen before design optimization; not an optimized design",
+  "fixed": {
+    "copper_area_normal_mm2": 6,
+    "frequency_Hz": 200000,
+    "current_RMS_A": 20,
+    "sigma_S_per_m": 58000000.0,
+    "relative_permeability": 1,
+    "temperature_C": 20,
+    "design_gap_um": 40,
+    "magnetic_outer_boundary_radius_mm": 6
+  },
+  "geometry": {
+    "total_strands": 64,
+    "grouping_inner_to_outer": [
+      64
+    ],
+    "recursive_levels": 1,
+    "signed_relative_pitches_mm": [
+      96.0
+    ],
+    "diameter_um": 345.4941494713355,
+    "gap_design_um": 40.0,
+    "copper_area_normal_mm2": 6.0,
+    "full_identity_repeat_mm": 96.0,
+    "outer_diameter_bound_mm": 3.5944864421310143,
+    "growth_min": 1.0000108012827815,
+    "growth_mean": 1.002803802842016,
+    "growth_max": 1.005629680210705,
+    "total_copper_volume_per_axial_m_mm3": 6016.822817052097,
+    "Rdc_length_parallel_ohm_per_m": 0.0028816125895071627,
+    "max_tangent_angle_deg": 6.06545331547499,
+    "min_bend_radius_mm": 145.38281563224413,
+    "min_sampled_axis_spacing_um": 385.4941436909274,
+    "conservative_sampled_projected_clearance_um": 38.054972643398855,
+    "radial_excursion_min_mm": 1.0648435258553413e-09,
+    "radial_excursion_max_mm": 2.4344406915691175e-08,
+    "all_strands_reach_center": false,
+    "note": "Centerlines and geometric diagnostics only. Sampled clearance is not a rigorous continuous collision certificate. No electromagnetic optimum is claimed."
+  },
+  "configuration": {
+    "total_strands": 64,
+    "grouping_inner_to_outer": [
+      64
+    ],
+    "recursive_levels": 1,
+    "signed_relative_pitches_mm": [
+      96.0
+    ],
+    "diameter_um": 345.4941494713355,
+    "gap_design_um": 40.0,
+    "copper_area_normal_mm2": 6.0,
+    "full_identity_repeat_mm": 96.0,
+    "outer_diameter_bound_mm": 3.5944864421310143,
+    "growth_min": 1.0000108012827815,
+    "growth_mean": 1.002803802842016,
+    "growth_max": 1.005629680210705,
+    "total_copper_volume_per_axial_m_mm3": 6016.822817052097,
+    "Rdc_length_parallel_ohm_per_m": 0.0028816125895071627,
+    "max_tangent_angle_deg": 6.06545331547499,
+    "min_bend_radius_mm": 145.38281563224413,
+    "min_sampled_axis_spacing_um": 385.4941436909274,
+    "conservative_sampled_projected_clearance_um": 38.054972643398855,
+    "radial_excursion_min_mm": 1.0648435258553413e-09,
+    "radial_excursion_max_mm": 2.4344406915691175e-08,
+    "all_strands_reach_center": false,
+    "note": "Centerlines and geometric diagnostics only. Sampled clearance is not a rigorous continuous collision certificate. No electromagnetic optimum is claimed.",
+    "mapping": {
+      "cell_length_m": 0.0005,
+      "rotation_deg": 1.8750000000000002,
+      "strand_destination_to_source": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "permutation": true,
+      "max_position_error_m": 1.9409392392205812e-11,
+      "max_tangent_error": 7.727069307955625e-08,
+      "geometry_mapping_pass": true,
+      "electrical_mapping_status": "Full A-phi field continuity implemented and checked; see validation evidence"
+    },
+    "current_cycles": [
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5
+      ],
+      [
+        6
+      ],
+      [
+        7
+      ],
+      [
+        8
+      ],
+      [
+        9
+      ],
+      [
+        10
+      ],
+      [
+        11
+      ],
+      [
+        12
+      ],
+      [
+        13
+      ],
+      [
+        14
+      ],
+      [
+        15
+      ],
+      [
+        16
+      ],
+      [
+        17
+      ],
+      [
+        18
+      ],
+      [
+        19
+      ],
+      [
+        20
+      ],
+      [
+        21
+      ],
+      [
+        22
+      ],
+      [
+        23
+      ],
+      [
+        24
+      ],
+      [
+        25
+      ],
+      [
+        26
+      ],
+      [
+        27
+      ],
+      [
+        28
+      ],
+      [
+        29
+      ],
+      [
+        30
+      ],
+      [
+        31
+      ],
+      [
+        32
+      ],
+      [
+        33
+      ],
+      [
+        34
+      ],
+      [
+        35
+      ],
+      [
+        36
+      ],
+      [
+        37
+      ],
+      [
+        38
+      ],
+      [
+        39
+      ],
+      [
+        40
+      ],
+      [
+        41
+      ],
+      [
+        42
+      ],
+      [
+        43
+      ],
+      [
+        44
+      ],
+      [
+        45
+      ],
+      [
+        46
+      ],
+      [
+        47
+      ],
+      [
+        48
+      ],
+      [
+        49
+      ],
+      [
+        50
+      ],
+      [
+        51
+      ],
+      [
+        52
+      ],
+      [
+        53
+      ],
+      [
+        54
+      ],
+      [
+        55
+      ],
+      [
+        56
+      ],
+      [
+        57
+      ],
+      [
+        58
+      ],
+      [
+        59
+      ],
+      [
+        60
+      ],
+      [
+        61
+      ],
+      [
+        62
+      ],
+      [
+        63
+      ]
+    ],
+    "mesh_radius_divisor": 3,
+    "zscale": 0.15,
+    "air_radius_mm": 6.0,
+    "solver": "ooc",
+    "electrical": "full_A_phi_periodic",
+    "mesh_kind": "sweep",
+    "axial_layers": 3,
+    "formal_baseline": true,
+    "validation_status": "accepted_prespecified_baseline_checks",
+    "av_ooc": false,
+    "current_prescription": "None; common axial voltage gradient; periodic potential; one gauge reference per permutation cycle"
+  },
+  "results": {
+    "Rdc": 0.0028816840747698195,
+    "Rac": 0.014314942597278368,
+    "K": 4.967561407099009,
+    "Pcu": 5.725977038911347,
+    "power_error_pct": 0.005901003186570275,
+    "source_sha256": "c1038ac4d5141b07726fabcf35aea2fd16037c41838e4295ffa603bc58e599e2"
+  },
+  "validation": {
+    "one_factor_Rac_change_pct": {
+      "baseline_64_av_m3": -0.6894449734816677,
+      "baseline_64_av_air10": 0.11320104539740417,
+      "baseline_64_av_length1": 0.01836174304372662
+    },
+    "dc_reference_error_pct": 0.0024807381435287823,
+    "accepted_limits": {
+      "Rac_change_pct": 1,
+      "power_error_pct": 0.1,
+      "dc_reference_error_pct": 0.5
+    },
+    "verification_cases": {
+      "baseline_64_av_m2": {
+        "Rdc": 0.002882173561352988,
+        "Rac": 0.014414321411712915,
+        "K": 5.001198264044291,
+        "Pcu": 5.765728564685166,
+        "power_error_pct": 0.005579830565427546,
+        "source_sha256": "96ff84d974ddaaf86657aacb65da56f3f5b5766fc5fe9ab9101b988e8934e72b"
+      },
+      "baseline_64_av_m3": {
+        "Rdc": 0.0028816840747698195,
+        "Rac": 0.014314942597278368,
+        "K": 4.967561407099009,
+        "Pcu": 5.725977038911347,
+        "power_error_pct": 0.005901003186570275,
+        "source_sha256": "c1038ac4d5141b07726fabcf35aea2fd16037c41838e4295ffa603bc58e599e2"
+      },
+      "baseline_64_av_air10": {
+        "Rdc": 0.002882173564982415,
+        "Rac": 0.014430638574237917,
+        "K": 5.006859666456611,
+        "Pcu": 5.772255429695167,
+        "power_error_pct": 0.008220201370545688,
+        "source_sha256": "769beee890f47fb0f2fad91e955aac1c03592b65ec01a39382b6f26ceb2d4231"
+      },
+      "baseline_64_av_length1": {
+        "Rdc": 0.002882167360554759,
+        "Rac": 0.01441696813237203,
+        "K": 5.002127332951635,
+        "Pcu": 5.766787252948812,
+        "power_error_pct": 0.005597683325153646,
+        "source_sha256": "db6937109174414f66eb772c0cc5205a123ff0d3d6ee9a8175a2bf4631095b3c"
+      }
+    }
+  },
+  "artifacts": {
+    "model": "data/raw/baseline_64_av_m3/model_fem.mph",
+    "model_sha256": "d869ebdb8554dccee4b79245a766a901e824d8a95430d4733c20cc9bab531b49"
+  }
+}

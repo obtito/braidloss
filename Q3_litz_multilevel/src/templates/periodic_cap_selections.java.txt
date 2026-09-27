@@ -1,0 +1,20 @@
+    java.util.Set<Integer> bcu=new java.util.HashSet<Integer>();
+    java.util.Set<Integer> tcu=new java.util.HashSet<Integer>();
+    for(int j=0;j<7;j++)for(String side:new String[]{"bottom","top"}) {
+      String tag=side+j;
+      m.component("c").selection().create(tag,"Intersection");
+      m.component("c").selection(tag).set("entitydim",2);
+      m.component("c").selection(tag).set("input",new String[]{side,"g_cu"+j+"_bnd"});
+      for(int e:m.component("c").selection(tag).entities()) {
+        if(side.equals("bottom"))bcu.add(e);else tcu.add(e);
+      }
+    }
+    for(String side:new String[]{"bottom","top"}) {
+      java.util.ArrayList<Integer> vals=new java.util.ArrayList<Integer>();
+      java.util.Set<Integer> used=side.equals("bottom")?bcu:tcu;
+      for(int e:m.component("c").selection(side).entities())if(!used.contains(e))vals.add(e);
+      int[] a=new int[vals.size()];for(int k=0;k<a.length;k++)a[k]=vals.get(k);
+      m.component("c").selection().create(side+"air","Explicit");
+      m.component("c").selection(side+"air").geom("g",2);
+      m.component("c").selection(side+"air").set(a);
+    }

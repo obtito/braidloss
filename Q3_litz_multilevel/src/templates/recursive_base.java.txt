@@ -1,0 +1,161 @@
+import com.comsol.model.*;
+import com.comsol.model.util.*;
+
+public class PilotRecursive {
+  static String[] paths={};
+  public static Model run() {
+    Model m = ModelUtil.create("fem");
+    m.label("3D round swept solids - recursive 3 x 3 stranding pilot");
+    m.param().set("a", "sqrt(6[mm^2]/343/pi)");
+    m.param().set("L", "1.33333333333333[mm]");
+    m.param().set("pitch", "5.0[mm]");
+    m.param().set("spacing", "0.0003828668967803646[m]");
+    m.param().set("I0", "20[A]*9/343");
+    m.param().set("Rair", "1[mm]");
+    m.param().set("sig", "5.8e7[S/m]");
+    m.param().set("V0", "1e-4[V]");
+    m.component().create("c", true);
+    m.component("c").sorder("quadratic");
+    m.component("c").geom().create("g", 3);
+    GeomSequence g = m.component("c").geom("g");
+    for(int j=0;j<paths.length;j++) {
+      String wp="wp"+j, ic="ic"+j, sw="sw"+j, clip="clip"+j, cu="cu"+j;
+      String[] raw=paths[j].split(",");
+      double[][] pts=new double[raw.length/3][3];
+      for(int k=0;k<raw.length;k++)pts[k/3][k%3]=Double.parseDouble(raw[k]);
+      g.create(wp,"WorkPlane");
+      g.feature(wp).geom().create("circle","Circle");
+      g.feature(wp).geom().feature("circle").set("r","a");
+      g.run(wp);
+      g.create(ic,"InterpolationCurve");
+      g.feature(ic).set("table",pts);
+      g.feature(ic).set("rtol",1e-7);
+      g.run(ic);
+      String curveObj="";
+      for(String ob:g.objectNames())if(ob.startsWith(ic))curveObj=ob;
+      System.out.println("STAGE|curve|"+j+"|"+curveObj);
+      g.create(sw,"Sweep");
+      g.feature(sw).selection("enttosweep").init(2);
+      g.feature(sw).selection("enttosweep").set(wp+".circle",new int[]{1});
+      g.feature(sw).selection("edge").set(curveObj,new int[]{1});
+      g.feature(sw).set("movetospine",true);
+      g.feature(sw).set("keep",false);
+      g.feature(sw).set("rtol",1e-6);
+      g.create(clip,"Block");
+      g.feature(clip).set("size",new String[]{"2*Rair","2*Rair","L"});
+      g.feature(clip).set("pos",new String[]{"-Rair","-Rair","0"});
+      g.create(cu,"Intersection");
+      g.feature(cu).selection("input").set(new String[]{sw,clip});
+      g.feature(cu).set("selresult",true);
+      g.run(cu);
+      System.out.println("STAGE|solid|"+j);
+    }
+    g.create("air", "Cylinder");
+    g.feature("air").set("r", "Rair");
+    g.feature("air").set("h", "L");
+    g.run();
+    m.component("c").selection().create("copper","Union");
+    String[] cuNames=new String[9];
+    for(int j=0;j<9;j++)cuNames[j]="g_cu"+j+"_dom";
+    m.component("c").selection("copper").set("input",cuNames);
+    System.out.println("STAGE|geometry_built");
+    for(String t:new String[]{"bottom","top"}) {
+      m.component("c").selection().create(t,"Box");
+      m.component("c").selection(t).set("entitydim",2);
+      m.component("c").selection(t).set("condition","inside");
+      m.component("c").selection(t).set("zmin", t.equals("bottom")?"-1[nm]":"L-1[nm]");
+      m.component("c").selection(t).set("zmax", t.equals("bottom")?"1[nm]":"L+1[nm]");
+    }
+    m.component("c").selection().create("bottomcu","Box");
+    m.component("c").selection("bottomcu").set("entitydim",2);
+    m.component("c").selection("bottomcu").set("condition","inside");
+    m.component("c").selection("bottomcu").set("xmin","-spacing-a-1[nm]");
+    m.component("c").selection("bottomcu").set("xmax","spacing+a+1[nm]");
+    m.component("c").selection("bottomcu").set("ymin","-spacing-a-1[nm]");
+    m.component("c").selection("bottomcu").set("ymax","spacing+a+1[nm]");
+    m.component("c").selection("bottomcu").set("zmin","-1[nm]");
+    m.component("c").selection("bottomcu").set("zmax","1[nm]");
+    m.component("c").material().create("airmat","Common");
+    m.component("c").material("airmat").propertyGroup("def").set("relpermeability","1");
+    m.component("c").material("airmat").propertyGroup("def").set("relpermittivity","1");
+    m.component("c").material("airmat").propertyGroup("def").set("electricconductivity","0");
+    m.component("c").material().create("cumat","Common");
+    m.component("c").material("cumat").selection().named("copper");
+    m.component("c").material("cumat").propertyGroup("def").set("relpermeability","1");
+    m.component("c").material("cumat").propertyGroup("def").set("relpermittivity","1");
+    m.component("c").material("cumat").propertyGroup("def").set("electricconductivity","sig");
+    m.component("c").physics().create("mf","InductionCurrents","g");
+    m.component("c").physics("mf").prop("ShapeProperty").set("order_magneticvectorpotential",1);
+    m.component("c").physics("mf").create("gfa1","GaugeFixingA",3);
+    m.component("c").physics("mf").feature("gfa1").selection().all();
+    for(int j=0;j<9;j++) {
+      String t="coil"+(j+1);
+      m.component("c").physics("mf").create(t,"Coil",3);
+      m.component("c").physics("mf").feature(t).selection().named("g_cu"+j+"_dom");
+      m.component("c").physics("mf").feature(t).set("ConductorModel","Single");
+      m.component("c").physics("mf").feature(t).set("CoilName",Integer.toString(j+1));
+      m.component("c").physics("mf").feature(t).set("CoilExcitation","Voltage");
+      m.component("c").physics("mf").feature(t).set("VCoil","V0");
+      m.component("c").physics("mf").feature(t).feature("ccc1").feature("ct1").selection().named("bottom");
+      m.component("c").physics("mf").feature(t).feature("ccc1").create("cg1","CoilGround",2);
+      m.component("c").physics("mf").feature(t).feature("ccc1").feature("cg1").selection().named("top");
+      m.component("c").cpl().create("intw"+j,"Integration");
+      m.component("c").cpl("intw"+j).selection().named("g_cu"+j+"_dom");
+    }
+    m.component("c").variable().create("vars");
+    m.component("c").variable("vars").set("Itot","mf.ICoil_1+mf.ICoil_2+mf.ICoil_3+mf.ICoil_4+mf.ICoil_5+mf.ICoil_6+mf.ICoil_7+mf.ICoil_8+mf.ICoil_9");
+    m.component("c").variable("vars").set("Jrms","mf.normJ*I0/abs(Itot)");
+    m.component("c").mesh().create("mesh");
+    m.component("c").mesh("mesh").create("ft","FreeTri");
+    m.component("c").mesh("mesh").feature("ft").selection().named("bottom");
+    m.component("c").mesh("mesh").feature("ft").create("size1","Size");
+    m.component("c").mesh("mesh").feature("ft").feature("size1").selection().named("bottomcu");
+    m.component("c").mesh("mesh").feature("ft").feature("size1").set("custom",true);
+    m.component("c").mesh("mesh").feature("ft").feature("size1").set("hmaxactive",true);
+    m.component("c").mesh("mesh").feature("ft").feature("size1").set("hmax","a/4");
+    m.component("c").mesh("mesh").create("sweep","Sweep");
+    m.component("c").mesh("mesh").feature("sweep").selection().named("copper");
+    m.component("c").mesh("mesh").feature("sweep").selection("sourceface").named("bottom");
+    m.component("c").mesh("mesh").feature("sweep").selection("targetface").named("top");
+    m.component("c").mesh("mesh").feature("sweep").create("dist","Distribution");
+    m.component("c").mesh("mesh").feature("sweep").feature("dist").set("numelem",12);
+    m.component("c").mesh("mesh").create("ftetra","FreeTet");
+    for(String t:new String[]{"bottom","top","bottomcu","copper"})System.out.println("STAGE|selection|"+t+"|"+java.util.Arrays.toString(m.component("c").selection(t).entities()));
+    m.component("c").mesh("mesh").run();
+    System.out.println("STAGE|mesh_built");
+    m.component("c").cpl().create("intcu","Integration");
+    m.component("c").cpl("intcu").selection().named("copper");
+    m.study().create("std");
+    m.study("std").create("ccc","CoilCurrentCalculation");
+    m.study("std").create("freq","Frequency");
+    m.study("std").feature("freq").set("plist","10 200000");
+    m.study("std").run();
+    m.result().numerical().create("ev","EvalGlobal");
+    String[] ex={"freq","Itot","V0","real(V0/Itot)/L","2*intcu(mf.Qh)/abs(Itot)^2/L","intcu(1)","2*intcu(mf.Qh)*I0^2/abs(Itot)^2/L"};
+    m.result().numerical("ev").set("expr",ex);
+    double[][] rr=m.result().numerical("ev").getReal();
+    double[][] ii=m.result().numerical("ev").getImag();
+    for(int j=0;j<rr.length;j++) for(int s=0;s<rr[j].length;s++)
+      System.out.println("METRIC|"+j+"|"+s+"|"+rr[j][s]+"|"+ii[j][s]);
+    m.result().numerical().create("strands","EvalGlobal");
+    String[] sx=new String[27];
+    for(int j=0;j<9;j++) {
+      sx[3*j]="mf.ICoil_"+(j+1)+"*I0/Itot";
+      sx[3*j+1]="2*intw"+j+"(mf.Qh)*I0^2/abs(Itot)^2/L";
+      sx[3*j+2]="intw"+j+"(1)";
+    }
+    m.result().numerical("strands").set("expr",sx);
+    double[][] sr=m.result().numerical("strands").getReal();
+    double[][] si=m.result().numerical("strands").getImag();
+    for(int j=0;j<sr.length;j++) for(int s=0;s<sr[j].length;s++)
+      System.out.println("STRAND|"+j+"|"+s+"|"+sr[j][s]+"|"+si[j][s]);
+    m.result().create("pg","PlotGroup3D");
+    m.result("pg").label("Solved 3D copper current density - peak phasors");
+    m.result("pg").create("sl","Slice");
+    m.result("pg").feature("sl").set("expr","Jrms");
+    m.result("pg").feature("sl").set("quickplane","xy");
+    System.out.println("SOLVE_COMPLETE");
+    return m;
+  }
+  public static void main(String[] args) { run(); }
+}

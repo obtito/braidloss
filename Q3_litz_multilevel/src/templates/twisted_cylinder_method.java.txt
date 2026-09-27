@@ -1,0 +1,22 @@
+  static void twistedCylinder(GeomSequence g,String tag,String radius) {
+    String wp="wp_"+tag, pc="pc_"+tag;
+    g.create(wp,"WorkPlane");
+    g.feature(wp).geom().create("circle","Circle");
+    g.feature(wp).geom().feature("circle").set("r",radius);
+    g.run(wp);
+    g.create(pc,"ParametricCurve");
+    g.feature(pc).set("parmin","0");
+    g.feature(pc).set("parmax","L");
+    g.feature(pc).set("coord",new String[]{"0","0","s"});
+    g.run(pc);
+    String ob="";for(String o:g.objectNames())if(o.startsWith(pc))ob=o;
+    g.create(tag,"Sweep");
+    g.feature(tag).selection("enttosweep").init(2);
+    g.feature(tag).selection("enttosweep").set(wp+".circle",new int[]{1});
+    g.feature(tag).selection("edge").set(ob,new int[]{1});
+    g.feature(tag).set("twist","360[deg]*s/pitch");
+    g.feature(tag).set("keep",false);
+    g.feature(tag).set("selresult",true);
+    g.feature(tag).set("selresultshow","all");
+    g.feature(tag).set("rtol",1e-7);
+  }
